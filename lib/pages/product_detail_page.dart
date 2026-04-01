@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/responsive.dart';
 
 class ProductDetailPage extends StatelessWidget {
   final Product product;
@@ -11,140 +12,215 @@ class ProductDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isWide = Responsive.isWide(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("DARIO'S STORE"),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.share_outlined),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Product Image
-            AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                color: AppTheme.grigioChiaro.withValues(alpha: 0.3),
-                child: Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => const Center(
-                    child: Icon(Icons.image_outlined,
-                        size: 80, color: AppTheme.grigio),
-                  ),
+      appBar: isWide
+          ? null
+          : AppBar(
+              title: const Text("DARIO'S STORE"),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.share_outlined),
+                  onPressed: () {},
                 ),
-              ),
+              ],
             ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: isWide
+                ? _buildWebLayout(context)
+                : _buildMobileLayout(context),
+          ),
+        ),
+      ),
+    );
+  }
 
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildWebLayout(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Back button
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Category
+                  const Icon(Icons.arrow_back, size: 18, color: AppTheme.grigio),
+                  const SizedBox(width: 8),
                   Text(
-                    product.category.toUpperCase(),
+                    'Torna al catalogo',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontSize: 11,
-                          letterSpacing: 3,
+                          decoration: TextDecoration.underline,
                         ),
                   ),
-                  const SizedBox(height: 8),
-
-                  // Name
-                  Text(
-                    product.name,
-                    style: GoogleFonts.playfairDisplay(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.nero,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Price & Rating
-                  Row(
-                    children: [
-                      Text(
-                        '€${product.price.toStringAsFixed(2)}',
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      const Spacer(),
-                      const Icon(Icons.star, size: 18, color: AppTheme.nero),
-                      const SizedBox(width: 4),
-                      Text(
-                        product.rating.toString(),
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                  const Divider(height: 32),
-
-                  // Description
-                  Text(
-                    'DESCRIZIONE',
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          letterSpacing: 3,
-                        ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    product.description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          height: 1.7,
-                        ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Add to Cart
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        CartProvider().addToCart(product);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              '${product.name} aggiunto al carrello',
-                              style: GoogleFonts.lato(color: AppTheme.bianco),
-                            ),
-                            backgroundColor: AppTheme.nero,
-                            behavior: SnackBarBehavior.floating,
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('AGGIUNGI AL CARRELLO'),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      child: const Text('COMPRA ORA'),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Details table
-                  _buildDetailRow(context, 'Categoria', product.category),
-                  _buildDetailRow(
-                      context, 'Valutazione', '${product.rating}/5.0'),
-                  _buildDetailRow(context, 'Spedizione', 'Gratuita sopra €50'),
-                  _buildDetailRow(context, 'Reso', '30 giorni'),
                 ],
               ),
             ),
+          ),
+          const SizedBox(height: 24),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image (left)
+              Expanded(
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    color: AppTheme.grigioChiaro.withValues(alpha: 0.3),
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Center(
+                        child: Icon(Icons.image_outlined,
+                            size: 80, color: AppTheme.grigio),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 48),
+              // Details (right)
+              Expanded(
+                child: _buildProductInfo(context),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMobileLayout(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+            color: AppTheme.grigioChiaro.withValues(alpha: 0.3),
+            child: Image.network(
+              product.imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => const Center(
+                child: Icon(Icons.image_outlined,
+                    size: 80, color: AppTheme.grigio),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: _buildProductInfo(context),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProductInfo(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Category
+        Text(
+          product.category.toUpperCase(),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 11,
+                letterSpacing: 3,
+              ),
+        ),
+        const SizedBox(height: 8),
+
+        // Name
+        Text(
+          product.name,
+          style: GoogleFonts.playfairDisplay(
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+            color: AppTheme.nero,
+          ),
+        ),
+        const SizedBox(height: 12),
+
+        // Price & Rating
+        Row(
+          children: [
+            Text(
+              '€${product.price.toStringAsFixed(2)}',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const Spacer(),
+            const Icon(Icons.star, size: 18, color: AppTheme.nero),
+            const SizedBox(width: 4),
+            Text(
+              product.rating.toString(),
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
           ],
         ),
-      ),
+        const Divider(height: 32),
+
+        // Description
+        Text(
+          'DESCRIZIONE',
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                letterSpacing: 3,
+              ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          product.description,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                height: 1.7,
+              ),
+        ),
+        const SizedBox(height: 32),
+
+        // Add to Cart
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              CartProvider().addToCart(product);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    '${product.name} aggiunto al carrello',
+                    style: GoogleFonts.lato(color: AppTheme.bianco),
+                  ),
+                  backgroundColor: AppTheme.nero,
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+              Navigator.of(context).pop();
+            },
+            child: const Text('AGGIUNGI AL CARRELLO'),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton(
+            onPressed: () {},
+            child: const Text('COMPRA ORA'),
+          ),
+        ),
+        const SizedBox(height: 32),
+
+        // Details table
+        _buildDetailRow(context, 'Categoria', product.category),
+        _buildDetailRow(context, 'Valutazione', '${product.rating}/5.0'),
+        _buildDetailRow(context, 'Spedizione', 'Gratuita sopra €50'),
+        _buildDetailRow(context, 'Reso', '30 giorni'),
+      ],
     );
   }
 

@@ -8,7 +8,10 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
-      child: Column(
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: Column(
         children: [
           const SizedBox(height: 20),
           // Avatar
@@ -74,7 +77,9 @@ class ProfilePage extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 20),
-        ],
+          ],
+          ),
+        ),
       ),
     );
   }

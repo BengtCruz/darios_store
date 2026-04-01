@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 
 class WebNavBar extends StatelessWidget implements PreferredSizeWidget {
@@ -58,12 +59,12 @@ class WebNavBar extends StatelessWidget implements PreferredSizeWidget {
 
                 // Nav links
                 _NavLink(
-                  label: 'HOME',
+                  label: S.of(context).navHome.toUpperCase(),
                   isActive: currentIndex == 0,
                   onTap: () => onTap(0),
                 ),
                 _NavLink(
-                  label: 'CATALOGO',
+                  label: S.of(context).navCatalog,
                   isActive: currentIndex == 1,
                   onTap: () => onTap(1),
                 ),
@@ -75,21 +76,21 @@ class WebNavBar extends StatelessWidget implements PreferredSizeWidget {
                   icon: Icons.search,
                   isActive: currentIndex == 2,
                   onTap: () => onTap(2),
-                  tooltip: 'Cerca',
+                  tooltip: S.of(context).navSearchLabel,
                 ),
                 const SizedBox(width: 8),
                 _NavIconButton(
                   icon: Icons.shopping_bag_outlined,
                   isActive: currentIndex == 3,
                   onTap: () => onTap(3),
-                  tooltip: 'Carrello',
+                  tooltip: S.of(context).navCartLabel,
                 ),
                 const SizedBox(width: 8),
                 _NavIconButton(
                   icon: Icons.person_outline,
                   isActive: currentIndex == 4,
                   onTap: () => onTap(4),
-                  tooltip: 'Profilo',
+                  tooltip: S.of(context).navProfileLabel,
                 ),
               ],
             ),

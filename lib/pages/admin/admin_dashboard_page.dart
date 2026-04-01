@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import '../../services/api_client.dart';
 import '../../theme/app_theme.dart';
 
@@ -36,7 +37,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
     } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = 'Impossibile connettersi al server.\n$e';
+        _error = e.toString();
         _loading = false;
       });
     }
@@ -44,6 +45,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Center(
@@ -52,10 +54,10 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Dashboard', style: Theme.of(context).textTheme.headlineLarge),
+              Text(s.dashboardTitle, style: Theme.of(context).textTheme.headlineLarge),
               const SizedBox(height: 4),
               Text(
-                'Panoramica del negozio',
+                s.dashboardSubtitle,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 24),
@@ -80,14 +82,14 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
           const Icon(Icons.cloud_off, size: 64, color: AppTheme.grigio),
           const SizedBox(height: 16),
           Text(
-            _error!,
+            '${S.of(context).dashboardServerError}\n$_error',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: _load,
-            child: const Text('RIPROVA'),
+            child: Text(S.of(context).dashboardRetry),
           ),
         ],
       ),
@@ -108,55 +110,55 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
           runSpacing: 16,
           children: [
             _StatCard(
-              title: 'Prodotti Totali',
+              title: S.of(context).dashboardTotalProducts,
               value: '${products['total'] ?? 0}',
               icon: Icons.inventory_2_outlined,
             ),
             _StatCard(
-              title: 'Prodotti Attivi',
+              title: S.of(context).dashboardActiveProducts,
               value: '${products['active'] ?? 0}',
               icon: Icons.check_circle_outline,
             ),
             _StatCard(
-              title: 'Categorie',
+              title: S.of(context).dashboardCategoriesStat,
               value: '${categories['total'] ?? 0}',
               icon: Icons.category_outlined,
             ),
           ],
         ),
         const SizedBox(height: 32),
-        Text('Ordini per Stato', style: Theme.of(context).textTheme.headlineMedium),
+        Text(S.of(context).dashboardOrdersByStatus, style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 16),
         Wrap(
           spacing: 16,
           runSpacing: 16,
           children: [
             _StatCard(
-              title: 'In Attesa',
+              title: S.of(context).dashboardPending,
               value: '${orders['pending'] ?? 0}',
               icon: Icons.hourglass_empty,
               color: Colors.orange,
             ),
             _StatCard(
-              title: 'Confermati',
+              title: S.of(context).dashboardConfirmed,
               value: '${orders['confirmed'] ?? 0}',
               icon: Icons.thumb_up_outlined,
               color: Colors.blue,
             ),
             _StatCard(
-              title: 'Spediti',
+              title: S.of(context).dashboardShipped,
               value: '${orders['shipped'] ?? 0}',
               icon: Icons.local_shipping_outlined,
               color: Colors.purple,
             ),
             _StatCard(
-              title: 'Consegnati',
+              title: S.of(context).dashboardDelivered,
               value: '${orders['delivered'] ?? 0}',
               icon: Icons.done_all,
               color: Colors.green,
             ),
             _StatCard(
-              title: 'Cancellati',
+              title: S.of(context).dashboardCancelled,
               value: '${orders['cancelled'] ?? 0}',
               icon: Icons.cancel_outlined,
               color: Colors.red,
@@ -165,7 +167,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
         ),
         const SizedBox(height: 32),
         // Quick actions
-        Text('Azioni Rapide', style: Theme.of(context).textTheme.headlineMedium),
+        Text(S.of(context).dashboardQuickActions, style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 16),
         Wrap(
           spacing: 12,
@@ -174,7 +176,7 @@ class _AdminDashboardPageState extends State<AdminDashboardPage> {
             OutlinedButton.icon(
               onPressed: _load,
               icon: const Icon(Icons.refresh),
-              label: const Text('AGGIORNA DATI'),
+              label: Text(S.of(context).dashboardRefresh),
             ),
           ],
         ),

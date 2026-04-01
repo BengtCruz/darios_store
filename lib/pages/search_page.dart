@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/mock_products.dart';
+import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../theme/app_theme.dart';
 import 'product_detail_page.dart';
@@ -52,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
                 onChanged: _search,
                 style: Theme.of(context).textTheme.bodyLarge,
                 decoration: InputDecoration(
-                  hintText: 'Cerca prodotti...',
+                  hintText: S.of(context).searchHint,
                   hintStyle: Theme.of(context).textTheme.bodyMedium,
                   prefixIcon:
                       const Icon(Icons.search, color: AppTheme.grigio),
@@ -92,7 +93,7 @@ class _SearchPageState extends State<SearchPage> {
                           size: 64, color: AppTheme.grigioChiaro),
                       const SizedBox(height: 16),
                       Text(
-                        'Cerca tra i nostri prodotti',
+                        S.of(context).searchEmpty,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
@@ -109,12 +110,12 @@ class _SearchPageState extends State<SearchPage> {
                           size: 64, color: AppTheme.grigioChiaro),
                       const SizedBox(height: 16),
                       Text(
-                        'Nessun risultato',
+                        S.of(context).searchNoResults,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Prova con un\'altra ricerca',
+                        S.of(context).searchTryAnother,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],

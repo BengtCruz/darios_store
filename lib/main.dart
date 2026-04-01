@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'l10n/app_localizations.dart';
 import 'theme/app_theme.dart';
 import 'utils/responsive.dart';
 import 'widgets/web_nav_bar.dart';
@@ -7,6 +8,8 @@ import 'pages/catalog_page.dart';
 import 'pages/search_page.dart';
 import 'pages/cart_page.dart';
 import 'pages/profile_page.dart';
+
+final appLocale = AppLocale();
 
 void main() {
   runApp(const DariosStoreApp());
@@ -17,11 +20,19 @@ class DariosStoreApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Dario's Store",
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme,
-      home: const MainShell(),
+    return AppLocaleProvider(
+      locale: appLocale,
+      child: Builder(
+        builder: (context) {
+          final s = S.of(context);
+          return MaterialApp(
+            title: s.appTitle,
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.theme,
+            home: const MainShell(),
+          );
+        },
+      ),
     );
   }
 }
@@ -71,12 +82,13 @@ class _MainShellState extends State<MainShell> {
   }
 
   Widget _buildMobileLayout() {
-    const titles = [
-      "DARIO'S STORE",
-      'CATALOGO',
-      'CERCA',
-      'CARRELLO',
-      'PROFILO',
+    final s = S.of(context);
+    final titles = [
+      s.brandName,
+      s.navCatalog,
+      s.navSearch,
+      s.navCart,
+      s.navProfile,
     ];
 
     return Scaffold(
@@ -104,31 +116,31 @@ class _MainShellState extends State<MainShell> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onNavigate,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home_outlined),
+            activeIcon: const Icon(Icons.home),
+            label: s.navHome,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view_outlined),
-            activeIcon: Icon(Icons.grid_view),
-            label: 'Catalogo',
+            icon: const Icon(Icons.grid_view_outlined),
+            activeIcon: const Icon(Icons.grid_view),
+            label: s.navCatalogLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            activeIcon: Icon(Icons.search),
-            label: 'Cerca',
+            icon: const Icon(Icons.search),
+            activeIcon: const Icon(Icons.search),
+            label: s.navSearchLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag_outlined),
-            activeIcon: Icon(Icons.shopping_bag),
-            label: 'Carrello',
+            icon: const Icon(Icons.shopping_bag_outlined),
+            activeIcon: const Icon(Icons.shopping_bag),
+            label: s.navCartLabel,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profilo',
+            icon: const Icon(Icons.person_outline),
+            activeIcon: const Icon(Icons.person),
+            label: s.navProfileLabel,
           ),
         ],
       ),

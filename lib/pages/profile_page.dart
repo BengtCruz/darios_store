@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import 'admin/admin_shell.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -65,6 +66,40 @@ class ProfilePage extends StatelessWidget {
           _buildMenuItem(context, Icons.notifications_outlined, 'Notifiche'),
           _buildMenuItem(context, Icons.help_outline, 'Assistenza'),
           _buildMenuItem(context, Icons.info_outline, 'Chi Siamo'),
+
+          const Divider(height: 32),
+
+          // Admin panel link
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AdminShell()),
+              );
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              decoration: BoxDecoration(
+                border: Border.all(color: AppTheme.nero),
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.admin_panel_settings, size: 20, color: AppTheme.nero),
+                  SizedBox(width: 8),
+                  Text(
+                    'PANNELLO AMMINISTRAZIONE',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.5,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
 
           const Divider(height: 32),
 

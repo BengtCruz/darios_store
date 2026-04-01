@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../data/mock_products.dart';
 import '../models/product.dart';
 import '../theme/app_theme.dart';
+import '../utils/responsive.dart';
 import 'product_detail_page.dart';
 
 class CatalogPage extends StatefulWidget {
@@ -23,56 +24,66 @@ class _CatalogPageState extends State<CatalogPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Category filter
-        SizedBox(
-          height: 48,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            children: [
-              _buildFilterChip('All'),
-              ...categories.map(_buildFilterChip),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-        // Product count
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '${_filteredProducts.length} PRODOTTI',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      letterSpacing: 2,
-                      fontSize: 12,
-                    ),
+    final isWide = Responsive.isWide(context);
+    final columns = Responsive.gridColumns(context);
+    final hPad = isWide ? 32.0 : 20.0;
+
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 1200),
+        child: Column(
+          children: [
+            if (isWide) const SizedBox(height: 24),
+            // Category filter
+            SizedBox(
+              height: 48,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: hPad),
+                children: [
+                  _buildFilterChip('All'),
+                  ...categories.map(_buildFilterChip),
+                ],
               ),
-            ],
-          ),
-        ),
-        const Divider(height: 24),
-        // Product grid
-        Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.65,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 16,
             ),
-            itemCount: _filteredProducts.length,
-            itemBuilder: (context, index) {
-              final product = _filteredProducts[index];
-              return _CatalogProductCard(product: product);
-            },
-          ),
+            const SizedBox(height: 8),
+            // Product count
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: hPad),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${_filteredProducts.length} PRODOTTI',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          letterSpacing: 2,
+                          fontSize: 12,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 24),
+            // Product grid
+            Expanded(
+              child: GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: hPad),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: columns,
+                  childAspectRatio: 0.65,
+                  mainAxisSpacing: 24,
+                  crossAxisSpacing: 20,
+                ),
+                itemCount: _filteredProducts.length,
+                itemBuilder: (context, index) {
+                  final product = _filteredProducts[index];
+                  return _CatalogProductCard(product: product);
+                },
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

@@ -39,93 +39,103 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Search bar
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: TextField(
-            controller: _controller,
-            onChanged: _search,
-            style: Theme.of(context).textTheme.bodyLarge,
-            decoration: InputDecoration(
-              hintText: 'Cerca prodotti...',
-              hintStyle: Theme.of(context).textTheme.bodyMedium,
-              prefixIcon: const Icon(Icons.search, color: AppTheme.grigio),
-              suffixIcon: _controller.text.isNotEmpty
-                  ? IconButton(
-                      icon:
-                          const Icon(Icons.close, size: 20, color: AppTheme.grigio),
-                      onPressed: () {
-                        _controller.clear();
-                        _search('');
-                      },
-                    )
-                  : null,
-              filled: false,
-              enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.zero,
-                borderSide: BorderSide(color: AppTheme.grigioChiaro, width: 1.5),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.zero,
-                borderSide: BorderSide(color: AppTheme.nero, width: 1.5),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 800),
+        child: Column(
+          children: [
+            // Search bar
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: TextField(
+                controller: _controller,
+                onChanged: _search,
+                style: Theme.of(context).textTheme.bodyLarge,
+                decoration: InputDecoration(
+                  hintText: 'Cerca prodotti...',
+                  hintStyle: Theme.of(context).textTheme.bodyMedium,
+                  prefixIcon:
+                      const Icon(Icons.search, color: AppTheme.grigio),
+                  suffixIcon: _controller.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.close,
+                              size: 20, color: AppTheme.grigio),
+                          onPressed: () {
+                            _controller.clear();
+                            _search('');
+                          },
+                        )
+                      : null,
+                  filled: false,
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.zero,
+                    borderSide:
+                        BorderSide(color: AppTheme.grigioChiaro, width: 1.5),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.zero,
+                    borderSide:
+                        BorderSide(color: AppTheme.nero, width: 1.5),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
 
-        // Results
-        if (_controller.text.isEmpty)
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.search, size: 64, color: AppTheme.grigioChiaro),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Cerca tra i nostri prodotti',
-                    style: Theme.of(context).textTheme.bodyMedium,
+            // Results
+            if (_controller.text.isEmpty)
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.search,
+                          size: 64, color: AppTheme.grigioChiaro),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Cerca tra i nostri prodotti',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
                   ),
-                ],
+                ),
+              )
+            else if (_results.isEmpty)
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.search_off,
+                          size: 64, color: AppTheme.grigioChiaro),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Nessun risultato',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Prova con un\'altra ricerca',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              Expanded(
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  itemCount: _results.length,
+                  separatorBuilder: (_, __) => const Divider(height: 1),
+                  itemBuilder: (context, index) {
+                    final product = _results[index];
+                    return _SearchResultTile(product: product);
+                  },
+                ),
               ),
-            ),
-          )
-        else if (_results.isEmpty)
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.search_off, size: 64, color: AppTheme.grigioChiaro),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Nessun risultato',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Prova con un\'altra ricerca',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-            ),
-          )
-        else
-          Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: _results.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final product = _results[index];
-                return _SearchResultTile(product: product);
-              },
-            ),
-          ),
-      ],
+          ],
+        ),
+      ),
     );
   }
 }

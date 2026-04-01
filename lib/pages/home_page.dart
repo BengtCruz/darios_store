@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../data/mock_products.dart';
 import '../models/product.dart';
 import '../theme/app_theme.dart';
+import '../utils/responsive.dart';
+import '../widgets/web_footer.dart';
 import 'product_detail_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -10,115 +12,171 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final featured =
-        mockProducts.where((p) => p.isFeatured).toList();
+    final featured = mockProducts.where((p) => p.isFeatured).toList();
+    final isWide = Responsive.isWide(context);
 
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Hero Banner
-          _buildHeroBanner(context),
+          _buildHeroBanner(context, isWide),
           const SizedBox(height: 32),
 
-          // Categories
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              'CATEGORIE',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    letterSpacing: 3,
-                  ),
+          // Centered content wrapper
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: isWide ? 32 : 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Categories
+                    Text(
+                      'CATEGORIE',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            letterSpacing: 3,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildCategoryList(context),
+                    const SizedBox(height: 48),
+
+                    // Featured Products
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'IN VETRINA',
+                          style:
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    letterSpacing: 3,
+                                  ),
+                        ),
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: Text(
+                            'Vedi tutto',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  decoration: TextDecoration.underline,
+                                ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    _buildFeaturedGrid(context, featured),
+                    const SizedBox(height: 48),
+
+                    // About section
+                    _buildAboutSection(context),
+                    const SizedBox(height: 48),
+                  ],
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 16),
-          _buildCategoryList(context),
-          const SizedBox(height: 32),
 
-          // Featured Products
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'IN VETRINA',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        letterSpacing: 3,
-                      ),
-                ),
-                Text(
-                  'Vedi tutto',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          _buildFeaturedGrid(context, featured),
-          const SizedBox(height: 32),
-
-          // About section
-          _buildAboutSection(context),
-          const SizedBox(height: 32),
+          // Web footer
+          const WebFooter(),
         ],
       ),
     );
   }
 
-  Widget _buildHeroBanner(BuildContext context) {
+  Widget _buildHeroBanner(BuildContext context, bool isWide) {
     return Container(
       width: double.infinity,
       color: AppTheme.nero,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 48),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Sapori\nd\'Italia',
-            style: GoogleFonts.playfairDisplay(
-              fontSize: 42,
-              fontWeight: FontWeight.w700,
-              color: AppTheme.bianco,
-              height: 1.1,
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isWide ? 32 : 20,
+              vertical: isWide ? 80 : 48,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Sapori\nd\'Italia',
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: isWide ? 64 : 42,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.bianco,
+                    height: 1.1,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Authentic Italian flavors,\ndelivered to your door.',
+                  style: GoogleFonts.lato(
+                    fontSize: isWide ? 18 : 16,
+                    color: AppTheme.grigioChiaro,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side:
+                        const BorderSide(color: AppTheme.bianco, width: 1.5),
+                    foregroundColor: AppTheme.bianco,
+                  ),
+                  onPressed: () {},
+                  child: const Text('SCOPRI ORA'),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 16),
-          Text(
-            'Authentic Italian flavors,\ndelivered to your door.',
-            style: GoogleFonts.lato(
-              fontSize: 16,
-              color: AppTheme.grigioChiaro,
-              height: 1.5,
-            ),
-          ),
-          const SizedBox(height: 24),
-          OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: AppTheme.bianco, width: 1.5),
-              foregroundColor: AppTheme.bianco,
-            ),
-            onPressed: () {},
-            child: const Text('SCOPRI ORA'),
-          ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildCategoryList(BuildContext context) {
+    final isWide = Responsive.isWide(context);
+    if (isWide) {
+      return Wrap(
+        spacing: 12,
+        runSpacing: 12,
+        children: categories.map((cat) {
+          return MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+              decoration: BoxDecoration(
+                border: Border.all(color: AppTheme.nero, width: 1.5),
+              ),
+              child: Text(
+                cat.toUpperCase(),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontSize: 12,
+                      letterSpacing: 2,
+                    ),
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    }
+
     return SizedBox(
       height: 48,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
         itemCount: categories.length,
         separatorBuilder: (_, __) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             decoration: BoxDecoration(
               border: Border.all(color: AppTheme.nero, width: 1.5),
             ),
@@ -138,30 +196,27 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildFeaturedGrid(BuildContext context, List<Product> products) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.65,
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 16,
-        ),
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return _ProductCard(product: products[index]);
-        },
+    final columns = Responsive.gridColumns(context);
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: columns,
+        childAspectRatio: 0.65,
+        mainAxisSpacing: 24,
+        crossAxisSpacing: 20,
       ),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        return _ProductCard(product: products[index]);
+      },
     );
   }
 
   Widget _buildAboutSection(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
         border: Border.all(color: AppTheme.grigioChiaro),
       ),
@@ -174,14 +229,17 @@ class HomePage extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: 16),
-          Text(
-            'From the rolling hills of Tuscany to your table. '
-            'We source only the finest artisanal ingredients from family-run '
-            'producers across Italy.',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  height: 1.6,
-                ),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Text(
+              'From the rolling hills of Tuscany to your table. '
+              'We source only the finest artisanal ingredients from family-run '
+              'producers across Italy.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    height: 1.6,
+                  ),
+            ),
           ),
         ],
       ),

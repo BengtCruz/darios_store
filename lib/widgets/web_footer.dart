@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
 
@@ -39,7 +40,7 @@ class WebFooter extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         Text(
-                          'Authentic Italian flavors,\ndelivered to your door.',
+                          S.of(context).footerTagline,
                           style: GoogleFonts.lato(
                             fontSize: 14,
                             color: AppTheme.grigio,
@@ -51,27 +52,27 @@ class WebFooter extends StatelessWidget {
                   ),
                   // Links columns
                   Expanded(
-                    child: _footerColumn(context, 'NEGOZIO', [
-                      'Catalogo',
-                      'In Vetrina',
-                      'Novità',
-                      'Offerte',
+                    child: _footerColumn(context, S.of(context).footerShop, [
+                      S.of(context).footerCatalog,
+                      S.of(context).footerFeaturedLink,
+                      S.of(context).footerNew,
+                      S.of(context).footerOffers,
                     ]),
                   ),
                   Expanded(
-                    child: _footerColumn(context, 'INFORMAZIONI', [
-                      'Chi Siamo',
-                      'Contatti',
-                      'Spedizioni',
-                      'Resi',
+                    child: _footerColumn(context, S.of(context).footerInfo, [
+                      S.of(context).footerAboutUs,
+                      S.of(context).footerContact,
+                      S.of(context).footerShippingLink,
+                      S.of(context).footerReturnsLink,
                     ]),
                   ),
                   Expanded(
-                    child: _footerColumn(context, 'ASSISTENZA', [
-                      'FAQ',
-                      'Termini & Condizioni',
-                      'Privacy Policy',
-                      'Cookie Policy',
+                    child: _footerColumn(context, S.of(context).footerSupport, [
+                      S.of(context).footerFaq,
+                      S.of(context).footerTerms,
+                      S.of(context).footerPrivacy,
+                      S.of(context).footerCookies,
                     ]),
                   ),
                 ],
@@ -80,7 +81,7 @@ class WebFooter extends StatelessWidget {
               const Divider(color: AppTheme.accent, thickness: 0.5),
               const SizedBox(height: 16),
               Text(
-                "© 2026 Dario's Store. Tutti i diritti riservati.",
+                S.of(context).footerCopyright,
                 style: GoogleFonts.lato(
                   fontSize: 12,
                   color: AppTheme.grigio,

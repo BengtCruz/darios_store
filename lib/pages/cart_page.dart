@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../l10n/app_localizations.dart';
 import '../models/cart_item.dart';
 import '../theme/app_theme.dart';
 
@@ -59,12 +60,12 @@ class _CartPageState extends State<CartPage> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Il tuo carrello è vuoto',
+              S.of(context).cartEmpty,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 12),
             Text(
-              'Esplora i nostri prodotti e aggiungi\nqualcosa di speciale al carrello.',
+              S.of(context).cartEmptyDesc,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     height: 1.6,
@@ -73,7 +74,7 @@ class _CartPageState extends State<CartPage> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {},
-              child: const Text('SCOPRI I PRODOTTI'),
+              child: Text(S.of(context).cartDiscover),
             ),
           ],
         ),
@@ -178,7 +179,7 @@ class _CartPageState extends State<CartPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'TOTALE',
+                S.of(context).cartTotal,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       letterSpacing: 3,
                     ),
@@ -195,7 +196,7 @@ class _CartPageState extends State<CartPage> {
           ),
           const SizedBox(height: 8),
           Text(
-            'Spedizione calcolata al checkout',
+            S.of(context).cartShippingNote,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontSize: 12,
                 ),
@@ -205,7 +206,7 @@ class _CartPageState extends State<CartPage> {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {},
-              child: const Text('PROCEDI AL CHECKOUT'),
+              child: Text(S.of(context).cartCheckout),
             ),
           ),
         ],

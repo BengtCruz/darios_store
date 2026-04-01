@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../data/mock_products.dart';
+import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
@@ -14,6 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final featured = mockProducts.where((p) => p.isFeatured).toList();
     final isWide = Responsive.isWide(context);
+    final s = S.of(context);
 
     return SingleChildScrollView(
       child: Column(
@@ -34,7 +36,7 @@ class HomePage extends StatelessWidget {
                   children: [
                     // Categories
                     Text(
-                      'CATEGORIE',
+                      s.homeCategories,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             letterSpacing: 3,
                           ),
@@ -48,7 +50,7 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'IN VETRINA',
+                          s.homeFeatured,
                           style:
                               Theme.of(context).textTheme.labelLarge?.copyWith(
                                     letterSpacing: 3,
@@ -57,7 +59,7 @@ class HomePage extends StatelessWidget {
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: Text(
-                            'Vedi tutto',
+                            s.homeSeeAll,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -104,7 +106,7 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Sapori\nd\'Italia',
+                  S.of(context).heroTitle,
                   style: GoogleFonts.playfairDisplay(
                     fontSize: isWide ? 64 : 42,
                     fontWeight: FontWeight.w700,
@@ -114,7 +116,7 @@ class HomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Authentic Italian flavors,\ndelivered to your door.',
+                  S.of(context).heroSubtitle,
                   style: GoogleFonts.lato(
                     fontSize: isWide ? 18 : 16,
                     color: AppTheme.grigioChiaro,
@@ -129,7 +131,7 @@ class HomePage extends StatelessWidget {
                     foregroundColor: AppTheme.bianco,
                   ),
                   onPressed: () {},
-                  child: const Text('SCOPRI ORA'),
+                  child: Text(S.of(context).heroButton),
                 ),
               ],
             ),
@@ -223,7 +225,7 @@ class HomePage extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'LA NOSTRA STORIA',
+            S.of(context).aboutTitle,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   letterSpacing: 3,
                 ),
@@ -232,9 +234,7 @@ class HomePage extends StatelessWidget {
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 600),
             child: Text(
-              'From the rolling hills of Tuscany to your table. '
-              'We source only the finest artisanal ingredients from family-run '
-              'producers across Italy.',
+              S.of(context).aboutText,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     height: 1.6,

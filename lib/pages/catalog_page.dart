@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/mock_products.dart';
+import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
@@ -13,10 +14,10 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
-  String _selectedCategory = 'All';
+  String? _selectedCategory;
 
   List<Product> get _filteredProducts {
-    if (_selectedCategory == 'All') return mockProducts;
+    if (_selectedCategory == null) return mockProducts;
     return mockProducts
         .where((p) => p.category == _selectedCategory)
         .toList();
@@ -27,6 +28,7 @@ class _CatalogPageState extends State<CatalogPage> {
     final isWide = Responsive.isWide(context);
     final columns = Responsive.gridColumns(context);
     final hPad = isWide ? 32.0 : 20.0;
+    final s = S.of(context);
 
     return Center(
       child: ConstrainedBox(
@@ -41,8 +43,8 @@ class _CatalogPageState extends State<CatalogPage> {
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: hPad),
                 children: [
-                  _buildFilterChip('All'),
-                  ...categories.map(_buildFilterChip),
+                  _buildFilterChip(s.catalogAll, null),
+                  ...categories.map((c) => _buildFilterChip(c, c)),
                 ],
               ),
             ),
@@ -54,7 +56,7 @@ class _CatalogPageState extends State<CatalogPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${_filteredProducts.length} PRODOTTI',
+                    s.productCount(_filteredProducts.length),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           letterSpacing: 2,
                           fontSize: 12,
@@ -87,12 +89,12 @@ class _CatalogPageState extends State<CatalogPage> {
     );
   }
 
-  Widget _buildFilterChip(String category) {
-    final isSelected = _selectedCategory == category;
+  Widget _buildFilterChip(String label, String? categoryValue) {
+    final isSelected = _selectedCategory == categoryValue;
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: GestureDetector(
-        onTap: () => setState(() => _selectedCategory = category),
+        onTap: () => setState(() => _selectedCategory = categoryValue),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
@@ -103,7 +105,7 @@ class _CatalogPageState extends State<CatalogPage> {
             ),
           ),
           child: Text(
-            category.toUpperCase(),
+            label.toUpperCase(),
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   fontSize: 11,
                   letterSpacing: 1.5,
@@ -159,7 +161,7 @@ class _CatalogProductCard extends StatelessWidget {
                             horizontal: 8, vertical: 4),
                         color: AppTheme.nero,
                         child: Text(
-                          'IN VETRINA',
+                          S.of(context).catalogFeaturedBadge,
                           style:
                               Theme.of(context).textTheme.labelLarge?.copyWith(
                                     fontSize: 9,

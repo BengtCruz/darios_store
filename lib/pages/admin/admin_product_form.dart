@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import '../../services/api_client.dart';
 import '../../theme/app_theme.dart';
 
@@ -84,14 +85,15 @@ class _AdminProductFormState extends State<AdminProductForm> {
       if (!mounted) return;
       setState(() => _saving = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Errore: $e')),
+        SnackBar(content: Text(S.of(context).errorMessage(e.toString()))),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final title = widget.isEditing ? 'Modifica Prodotto' : 'Nuovo Prodotto';
+    final s = S.of(context);
+    final title = widget.isEditing ? s.formEditProduct : s.formNewProduct;
 
     return Scaffold(
       appBar: AppBar(
@@ -110,22 +112,22 @@ class _AdminProductFormState extends State<AdminProductForm> {
                   Text(title, style: Theme.of(context).textTheme.headlineLarge),
                   const SizedBox(height: 24),
 
-                  _buildField('Nome *', _nameCtrl, validator: _required),
+                  _buildField(s.formProductName, _nameCtrl, validator: _required),
                   const SizedBox(height: 16),
-                  _buildField('Descrizione *', _descCtrl,
+                  _buildField(s.formProductDescription, _descCtrl,
                       maxLines: 3, validator: _required),
                   const SizedBox(height: 16),
 
                   Row(
                     children: [
                       Expanded(
-                        child: _buildField('Prezzo (€) *', _priceCtrl,
+                        child: _buildField(s.formProductPrice, _priceCtrl,
                             keyboardType: TextInputType.number,
                             validator: _validatePrice),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: _buildField('Categoria *', _categoryCtrl,
+                        child: _buildField(s.formProductCategory, _categoryCtrl,
                             validator: _required),
                       ),
                     ],
@@ -135,11 +137,11 @@ class _AdminProductFormState extends State<AdminProductForm> {
                   Row(
                     children: [
                       Expanded(
-                        child: _buildField('URL Immagine', _imageUrlCtrl),
+                        child: _buildField(s.formProductImageUrl, _imageUrlCtrl),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
-                        child: _buildField('Valutazione', _ratingCtrl,
+                        child: _buildField(s.formProductRating, _ratingCtrl,
                             keyboardType: TextInputType.number),
                       ),
                     ],
@@ -155,17 +157,17 @@ class _AdminProductFormState extends State<AdminProductForm> {
                     child: Column(
                       children: [
                         SwitchListTile(
-                          title: const Text('Prodotto Attivo'),
-                          subtitle: const Text('Visibile nel negozio'),
+                          title: Text(s.formProductActive),
+                          subtitle: Text(s.formProductActiveDesc),
                           value: _isActive,
                           activeColor: AppTheme.nero,
                           onChanged: (v) => setState(() => _isActive = v),
                         ),
                         const Divider(),
                         SwitchListTile(
-                          title: const Text('In Evidenza'),
+                          title: Text(s.formProductFeatured),
                           subtitle:
-                              const Text('Mostra nella sezione in evidenza'),
+                              Text(s.formProductFeaturedDesc),
                           value: _isFeatured,
                           activeColor: AppTheme.nero,
                           onChanged: (v) => setState(() => _isFeatured = v),
@@ -181,7 +183,7 @@ class _AdminProductFormState extends State<AdminProductForm> {
                       OutlinedButton(
                         onPressed:
                             _saving ? null : () => Navigator.pop(context),
-                        child: const Text('ANNULLA'),
+                        child: Text(s.cancel),
                       ),
                       const SizedBox(width: 16),
                       ElevatedButton(
@@ -195,7 +197,7 @@ class _AdminProductFormState extends State<AdminProductForm> {
                                   color: AppTheme.bianco,
                                 ),
                               )
-                            : Text(widget.isEditing ? 'SALVA' : 'CREA PRODOTTO'),
+                            : Text(widget.isEditing ? s.save : s.formCreateProduct),
                       ),
                     ],
                   ),
@@ -233,13 +235,13 @@ class _AdminProductFormState extends State<AdminProductForm> {
   }
 
   String? _required(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Campo obbligatorio';
+    if (value == null || value.trim().isEmpty) return S.of(context).formFieldRequired;
     return null;
   }
 
   String? _validatePrice(String? value) {
-    if (value == null || value.trim().isEmpty) return 'Campo obbligatorio';
-    if (double.tryParse(value.trim()) == null) return 'Prezzo non valido';
+    if (value == null || value.trim().isEmpty) return S.of(context).formFieldRequired;
+    if (double.tryParse(value.trim()) == null) return S.of(context).formInvalidPrice;
     return null;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 import 'admin/admin_shell.dart';
 
@@ -29,12 +30,12 @@ class ProfilePage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Benvenuto',
+            S.of(context).profileWelcome,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 8),
           Text(
-            'Accedi per gestire i tuoi ordini',
+            S.of(context).profileSubtitle,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 24),
@@ -44,7 +45,7 @@ class ProfilePage extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {},
-              child: const Text('ACCEDI'),
+              child: Text(S.of(context).profileSignIn),
             ),
           ),
           const SizedBox(height: 12),
@@ -52,20 +53,25 @@ class ProfilePage extends StatelessWidget {
             width: double.infinity,
             child: OutlinedButton(
               onPressed: () {},
-              child: const Text('CREA ACCOUNT'),
+              child: Text(S.of(context).profileCreateAccount),
             ),
           ),
 
           const Divider(height: 48),
 
+          // Language switcher
+          _buildLanguageSwitcher(context),
+
+          const Divider(height: 32),
+
           // Menu items
-          _buildMenuItem(context, Icons.shopping_bag_outlined, 'I Miei Ordini'),
-          _buildMenuItem(context, Icons.favorite_outline, 'Lista Desideri'),
-          _buildMenuItem(context, Icons.location_on_outlined, 'Indirizzi'),
-          _buildMenuItem(context, Icons.payment_outlined, 'Metodi di Pagamento'),
-          _buildMenuItem(context, Icons.notifications_outlined, 'Notifiche'),
-          _buildMenuItem(context, Icons.help_outline, 'Assistenza'),
-          _buildMenuItem(context, Icons.info_outline, 'Chi Siamo'),
+          _buildMenuItem(context, Icons.shopping_bag_outlined, S.of(context).profileMyOrders),
+          _buildMenuItem(context, Icons.favorite_outline, S.of(context).profileWishlist),
+          _buildMenuItem(context, Icons.location_on_outlined, S.of(context).profileAddresses),
+          _buildMenuItem(context, Icons.payment_outlined, S.of(context).profilePaymentMethods),
+          _buildMenuItem(context, Icons.notifications_outlined, S.of(context).profileNotifications),
+          _buildMenuItem(context, Icons.help_outline, S.of(context).profileSupport),
+          _buildMenuItem(context, Icons.info_outline, S.of(context).profileAbout),
 
           const Divider(height: 32),
 
@@ -83,13 +89,13 @@ class ProfilePage extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(color: AppTheme.nero),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.admin_panel_settings, size: 20, color: AppTheme.nero),
-                  SizedBox(width: 8),
+                  const Icon(Icons.admin_panel_settings, size: 20, color: AppTheme.nero),
+                  const SizedBox(width: 8),
                   Text(
-                    'PANNELLO AMMINISTRAZIONE',
+                    S.of(context).profileAdmin,
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       letterSpacing: 1.5,
@@ -105,7 +111,7 @@ class ProfilePage extends StatelessWidget {
 
           // App info
           Text(
-            "DARIO'S STORE v1.0.0",
+            S.of(context).profileVersion,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontSize: 11,
                   letterSpacing: 2,
@@ -137,6 +143,41 @@ class ProfilePage extends StatelessWidget {
             const Icon(Icons.chevron_right, color: AppTheme.grigio),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageSwitcher(BuildContext context) {
+    final locale = AppLocaleProvider.of(context);
+    final s = S.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          const Icon(Icons.language, size: 22, color: AppTheme.nero),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              s.profileLanguage,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          SegmentedButton<AppLanguage>(
+            segments: const [
+              ButtonSegment(value: AppLanguage.en, label: Text('EN')),
+              ButtonSegment(value: AppLanguage.sv, label: Text('SV')),
+            ],
+            selected: {locale.language},
+            onSelectionChanged: (sel) => locale.setLanguage(sel.first),
+            style: ButtonStyle(
+              shape: WidgetStateProperty.all(
+                const RoundedRectangleBorder(),
+              ),
+              visualDensity: VisualDensity.compact,
+            ),
+          ),
+        ],
       ),
     );
   }

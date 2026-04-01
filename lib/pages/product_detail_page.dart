@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
@@ -18,7 +19,7 @@ class ProductDetailPage extends StatelessWidget {
       appBar: isWide
           ? null
           : AppBar(
-              title: const Text("DARIO'S STORE"),
+              title: Text(S.of(context).brandName),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.share_outlined),
@@ -56,7 +57,7 @@ class ProductDetailPage extends StatelessWidget {
                   const Icon(Icons.arrow_back, size: 18, color: AppTheme.grigio),
                   const SizedBox(width: 8),
                   Text(
-                    'Torna al catalogo',
+                    S.of(context).detailBackToCatalog,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           decoration: TextDecoration.underline,
                         ),
@@ -169,7 +170,7 @@ class ProductDetailPage extends StatelessWidget {
 
         // Description
         Text(
-          'DESCRIZIONE',
+          S.of(context).detailDescription,
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 letterSpacing: 3,
               ),
@@ -192,7 +193,7 @@ class ProductDetailPage extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    '${product.name} aggiunto al carrello',
+                    S.of(context).detailAddedToCart(product.name),
                     style: GoogleFonts.lato(color: AppTheme.bianco),
                   ),
                   backgroundColor: AppTheme.nero,
@@ -202,7 +203,7 @@ class ProductDetailPage extends StatelessWidget {
               );
               Navigator.of(context).pop();
             },
-            child: const Text('AGGIUNGI AL CARRELLO'),
+            child: Text(S.of(context).detailAddToCart),
           ),
         ),
         const SizedBox(height: 12),
@@ -210,16 +211,16 @@ class ProductDetailPage extends StatelessWidget {
           width: double.infinity,
           child: OutlinedButton(
             onPressed: () {},
-            child: const Text('COMPRA ORA'),
+            child: Text(S.of(context).detailBuyNow),
           ),
         ),
         const SizedBox(height: 32),
 
         // Details table
-        _buildDetailRow(context, 'Categoria', product.category),
-        _buildDetailRow(context, 'Valutazione', '${product.rating}/5.0'),
-        _buildDetailRow(context, 'Spedizione', 'Gratuita sopra €50'),
-        _buildDetailRow(context, 'Reso', '30 giorni'),
+        _buildDetailRow(context, S.of(context).detailCategory, product.category),
+        _buildDetailRow(context, S.of(context).detailRating, '${product.rating}/5.0'),
+        _buildDetailRow(context, S.of(context).detailShipping, S.of(context).detailShippingValue),
+        _buildDetailRow(context, S.of(context).detailReturns, S.of(context).detailReturnsValue),
       ],
     );
   }

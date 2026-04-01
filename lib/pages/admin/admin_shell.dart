@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import 'admin_dashboard_page.dart';
 import 'admin_products_page.dart';
@@ -22,23 +23,24 @@ class _AdminShellState extends State<AdminShell> {
     AdminOrdersPage(),
   ];
 
-  static const _titles = [
-    'Dashboard',
-    'Prodotti',
-    'Categorie',
-    'Ordini',
-  ];
-
-  static const _icons = [
-    Icons.dashboard_outlined,
-    Icons.inventory_2_outlined,
-    Icons.category_outlined,
-    Icons.receipt_long_outlined,
-  ];
-
   @override
   Widget build(BuildContext context) {
     final isWide = MediaQuery.of(context).size.width > 800;
+    final s = S.of(context);
+
+    final titles = [
+      s.adminDashboard,
+      s.adminProducts,
+      s.adminCategories,
+      s.adminOrders,
+    ];
+
+    const icons = [
+      Icons.dashboard_outlined,
+      Icons.inventory_2_outlined,
+      Icons.category_outlined,
+      Icons.receipt_long_outlined,
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +50,7 @@ class _AdminShellState extends State<AdminShell> {
             const Icon(Icons.admin_panel_settings, size: 20),
             const SizedBox(width: 8),
             Text(
-              "DARIO'S STORE — ADMIN",
+              s.adminTitle,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     letterSpacing: 2,
                     fontWeight: FontWeight.w700,
@@ -60,27 +62,27 @@ class _AdminShellState extends State<AdminShell> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
-          tooltip: 'Torna al negozio',
+          tooltip: s.adminBackToStore,
         ),
       ),
-      body: isWide ? _buildWideLayout() : _buildNarrowLayout(),
+      body: isWide ? _buildWideLayout(titles, icons, s) : _buildNarrowLayout(),
       bottomNavigationBar: isWide
           ? null
           : BottomNavigationBar(
               currentIndex: _currentIndex,
               onTap: (i) => setState(() => _currentIndex = i),
               items: List.generate(
-                _titles.length,
+                titles.length,
                 (i) => BottomNavigationBarItem(
-                  icon: Icon(_icons[i]),
-                  label: _titles[i],
+                  icon: Icon(icons[i]),
+                  label: titles[i],
                 ),
               ),
             ),
     );
   }
 
-  Widget _buildWideLayout() {
+  Widget _buildWideLayout(List<String> titles, List<IconData> icons, S s) {
     return Row(
       children: [
         // Sidebar
@@ -94,7 +96,7 @@ class _AdminShellState extends State<AdminShell> {
           child: Column(
             children: [
               const SizedBox(height: 8),
-              ...List.generate(_titles.length, (i) {
+              ...List.generate(titles.length, (i) {
                 final selected = _currentIndex == i;
                 return Material(
                   color: selected ? AppTheme.nero : Colors.transparent,
@@ -109,13 +111,13 @@ class _AdminShellState extends State<AdminShell> {
                       child: Row(
                         children: [
                           Icon(
-                            _icons[i],
+                            icons[i],
                             size: 20,
                             color: selected ? AppTheme.bianco : AppTheme.nero,
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            _titles[i],
+                            titles[i],
                             style: TextStyle(
                               color:
                                   selected ? AppTheme.bianco : AppTheme.nero,
@@ -136,7 +138,7 @@ class _AdminShellState extends State<AdminShell> {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  'Pannello Amministrazione\nv1.0.0',
+                  s.adminPanelVersion,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontSize: 11,
                       ),

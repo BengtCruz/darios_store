@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import '../../services/api_client.dart';
 import '../../theme/app_theme.dart';
 import 'admin_product_form.dart';
@@ -47,17 +48,17 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Conferma Eliminazione'),
-        content: Text('Eliminare il prodotto "$name"?'),
+        title: Text(S.of(context).confirmDelete),
+        content: Text(S.of(context).confirmDeleteProduct(name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('ANNULLA'),
+            child: Text(S.of(context).cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('ELIMINA'),
+            child: Text(S.of(context).delete),
           ),
         ],
       ),
@@ -70,7 +71,7 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
       } catch (e) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Errore: $e')),
+          SnackBar(content: Text(S.of(context).errorMessage(e.toString()))),
         );
       }
     }
@@ -88,6 +89,7 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -100,10 +102,10 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Prodotti', style: Theme.of(context).textTheme.headlineLarge),
+                    Text(s.adminProductsTitle, style: Theme.of(context).textTheme.headlineLarge),
                     const SizedBox(height: 4),
                     Text(
-                      '${_products.length} prodotti totali',
+                      s.adminProductsCount(_products.length),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
@@ -112,7 +114,7 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
               ElevatedButton.icon(
                 onPressed: () => _openForm(),
                 icon: const Icon(Icons.add, size: 18),
-                label: const Text('NUOVO PRODOTTO'),
+                label: Text(s.adminNewProduct),
               ),
             ],
           ),
@@ -131,7 +133,7 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
                   children: [
                     Text(_error!, style: Theme.of(context).textTheme.bodyMedium),
                     const SizedBox(height: 16),
-                    ElevatedButton(onPressed: _load, child: const Text('RIPROVA')),
+                    ElevatedButton(onPressed: _load, child: Text(s.adminRetry)),
                   ],
                 ),
               ),
@@ -144,19 +146,20 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
   }
 
   Widget _buildTable() {
+    final s = S.of(context);
     return SingleChildScrollView(
       child: SizedBox(
         width: double.infinity,
         child: DataTable(
           headingRowColor: WidgetStateProperty.all(AppTheme.nero.withValues(alpha: 0.05)),
           columnSpacing: 20,
-          columns: const [
-            DataColumn(label: Text('NOME', style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
-            DataColumn(label: Text('CATEGORIA', style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
-            DataColumn(label: Text('PREZZO', style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1)), numeric: true),
-            DataColumn(label: Text('ATTIVO', style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
-            DataColumn(label: Text('IN EVIDENZA', style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
-            DataColumn(label: Text('AZIONI', style: TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
+          columns: [
+            DataColumn(label: Text(s.tableHeaderName, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
+            DataColumn(label: Text(s.tableHeaderCategory, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
+            DataColumn(label: Text(s.tableHeaderPrice, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1)), numeric: true),
+            DataColumn(label: Text(s.tableHeaderActive, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
+            DataColumn(label: Text(s.tableHeaderFeatured, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
+            DataColumn(label: Text(s.tableHeaderActions, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
           ],
           rows: _products.map((p) {
             return DataRow(
@@ -189,12 +192,12 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit_outlined, size: 18),
-                        tooltip: 'Modifica',
+                        tooltip: s.edit,
                         onPressed: () => _openForm(p),
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete_outline, size: 18, color: Colors.red),
-                        tooltip: 'Elimina',
+                        tooltip: s.delete,
                         onPressed: () => _deleteProduct(
                           p['id'] as String,
                           p['name'] as String? ?? '',

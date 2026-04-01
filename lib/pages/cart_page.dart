@@ -22,21 +22,26 @@ class _CartPageState extends State<CartPage> {
       return _buildEmptyCart(context);
     }
 
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.all(20),
-            itemCount: _items.length,
-            separatorBuilder: (_, __) => const Divider(height: 32),
-            itemBuilder: (context, index) {
-              final item = _items[index];
-              return _buildCartItem(context, item, index);
-            },
-          ),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 800),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(20),
+                itemCount: _items.length,
+                separatorBuilder: (_, __) => const Divider(height: 32),
+                itemBuilder: (context, index) {
+                  final item = _items[index];
+                  return _buildCartItem(context, item, index);
+                },
+              ),
+            ),
+            _buildCartSummary(context),
+          ],
         ),
-        _buildCartSummary(context),
-      ],
+      ),
     );
   }
 

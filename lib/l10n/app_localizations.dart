@@ -228,6 +228,29 @@ class S {
   String get catCheese => 'Cheese';
   String get catSauces => 'Sauces';
   String get catSweets => 'Sweets';
+
+  // --- Auth ---
+  String get authLogin => 'Sign In';
+  String get authLoginTitle => 'SIGN IN';
+  String get authLoginSubtitle => 'Welcome back';
+  String get authRegister => 'Create Account';
+  String get authRegisterTitle => 'CREATE ACCOUNT';
+  String get authRegisterSubtitle => 'Join us today';
+  String get authEmail => 'Email';
+  String get authPassword => 'Password';
+  String get authConfirmPassword => 'Confirm Password';
+  String get authName => 'Full Name';
+  String get authLogout => 'SIGN OUT';
+  String get authNoAccount => "Don't have an account?";
+  String get authHaveAccount => 'Already have an account?';
+  String get authSignUpLink => 'Create one';
+  String get authSignInLink => 'Sign in';
+  String get authFieldRequired => 'This field is required';
+  String get authInvalidEmail => 'Invalid email address';
+  String get authPasswordTooShort => 'Password must be at least 8 characters';
+  String get authPasswordsNoMatch => 'Passwords do not match';
+  String get authLoginFailed => 'Invalid email or password';
+  String get authRegisterFailed => 'Registration failed';
 }
 
 class _Sv extends S {
@@ -435,6 +458,29 @@ class _Sv extends S {
   @override String get catCheese => 'Ost';
   @override String get catSauces => 'Såser';
   @override String get catSweets => 'Sötsaker';
+
+  // --- Auth ---
+  @override String get authLogin => 'Logga in';
+  @override String get authLoginTitle => 'LOGGA IN';
+  @override String get authLoginSubtitle => 'Välkommen tillbaka';
+  @override String get authRegister => 'Skapa konto';
+  @override String get authRegisterTitle => 'SKAPA KONTO';
+  @override String get authRegisterSubtitle => 'Gå med idag';
+  @override String get authEmail => 'E-post';
+  @override String get authPassword => 'Lösenord';
+  @override String get authConfirmPassword => 'Bekräfta lösenord';
+  @override String get authName => 'Fullständigt namn';
+  @override String get authLogout => 'LOGGA UT';
+  @override String get authNoAccount => 'Har du inget konto?';
+  @override String get authHaveAccount => 'Har du redan ett konto?';
+  @override String get authSignUpLink => 'Skapa ett';
+  @override String get authSignInLink => 'Logga in';
+  @override String get authFieldRequired => 'Detta fält är obligatoriskt';
+  @override String get authInvalidEmail => 'Ogiltig e-postadress';
+  @override String get authPasswordTooShort => 'Lösenordet måste vara minst 8 tecken';
+  @override String get authPasswordsNoMatch => 'Lösenorden matchar inte';
+  @override String get authLoginFailed => 'Ogiltig e-post eller lösenord';
+  @override String get authRegisterFailed => 'Registreringen misslyckades';
 }
 
 class AppLocaleProvider extends InheritedNotifier<AppLocale> {

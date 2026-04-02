@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import '../providers/provider_scope.dart';
 import '../theme/app_theme.dart';
 import 'admin/admin_shell.dart';
+import 'login_page.dart';
+import 'register_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final auth = AuthProviderScope.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Center(
@@ -24,38 +29,80 @@ class ProfilePage extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: AppTheme.nero, width: 2),
             ),
-            child: const Center(
-              child: Icon(Icons.person_outline, size: 48, color: AppTheme.nero),
+            child: Center(
+              child: auth.isLoggedIn
+                  ? Text(
+                      auth.userName.isNotEmpty
+                          ? auth.userName[0].toUpperCase()
+                          : '?',
+                      style: const TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.nero,
+                      ),
+                    )
+                  : const Icon(Icons.person_outline, size: 48, color: AppTheme.nero),
             ),
           ),
           const SizedBox(height: 16),
-          Text(
-            S.of(context).profileWelcome,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            S.of(context).profileSubtitle,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: 24),
 
-          // Sign in button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {},
-              child: Text(S.of(context).profileSignIn),
+          if (auth.isLoggedIn) ...[
+            Text(
+              auth.userName,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () {},
-              child: Text(S.of(context).profileCreateAccount),
+            const SizedBox(height: 4),
+            Text(
+              auth.userEmail,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
-          ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () => auth.logout(),
+                child: Text(S.of(context).authLogout),
+              ),
+            ),
+          ] else ...[
+            Text(
+              S.of(context).profileWelcome,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              S.of(context).profileSubtitle,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 24),
+
+            // Sign in button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginPage()),
+                  );
+                },
+                child: Text(S.of(context).profileSignIn),
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const RegisterPage()),
+                  );
+                },
+                child: Text(S.of(context).profileCreateAccount),
+              ),
+            ),
+          ],
 
           const Divider(height: 48),
 
@@ -75,7 +122,8 @@ class ProfilePage extends StatelessWidget {
 
           const Divider(height: 32),
 
-          // Admin panel link
+          // Admin panel link (only for admins)
+          if (auth.isAdmin) ...[
           InkWell(
             onTap: () {
               Navigator.push(
@@ -108,8 +156,7 @@ class ProfilePage extends StatelessWidget {
           ),
 
           const Divider(height: 32),
-
-          // App info
+          ],
           Text(
             S.of(context).profileVersion,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(

@@ -1,19 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../data/mock_products.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
+import '../services/api_client.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
 import '../widgets/web_footer.dart';
 import 'product_detail_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _api = ApiClient();
+  List<Product> _featured = [];
+  List<String> _categories = [];
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final results = await Future.wait([
+        _api.getProducts(featured: true),
+        _api.getCategories(),
+      ]);
+      if (!mounted) return;
+      setState(() {
+        _featured = results[0]
+            .map((j) => Product.fromJson(j))
+            .toList();
+        _categories = results[1]
+            .map((j) => j['name'] as String)
+            .toList();
+        _loading = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _loading = false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final featured = mockProducts.where((p) => p.isFeatured).toList();
     final isWide = Responsive.isWide(context);
     final s = S.of(context);
 
@@ -25,6 +62,12 @@ class HomePage extends StatelessWidget {
           _buildHeroBanner(context, isWide),
           const SizedBox(height: 32),
 
+          if (_loading)
+            const Padding(
+              padding: EdgeInsets.all(64),
+              child: Center(child: CircularProgressIndicator(color: AppTheme.nero)),
+            )
+          else ...[
           // Centered content wrapper
           Center(
             child: ConstrainedBox(
@@ -71,7 +114,7 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    _buildFeaturedGrid(context, featured),
+                    _buildFeaturedGrid(context, _featured),
                     const SizedBox(height: 48),
 
                     // About section
@@ -82,6 +125,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
+          ],
 
           // Web footer
           const WebFooter(),
@@ -147,7 +191,7 @@ class HomePage extends StatelessWidget {
       return Wrap(
         spacing: 12,
         runSpacing: 12,
-        children: categories.map((cat) {
+        children: _categories.map((cat) {
           return MouseRegion(
             cursor: SystemMouseCursors.click,
             child: Container(
@@ -173,7 +217,7 @@ class HomePage extends StatelessWidget {
       height: 48,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        itemCount: categories.length,
+        itemCount: _categories.length,
         separatorBuilder: (_, __) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
           return Container(
@@ -184,7 +228,7 @@ class HomePage extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                categories[index].toUpperCase(),
+                _categories[index].toUpperCase(),
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontSize: 12,
                       letterSpacing: 2,

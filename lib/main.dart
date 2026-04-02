@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'l10n/app_localizations.dart';
+import 'providers/auth_provider.dart';
+import 'providers/cart_provider.dart';
+import 'providers/provider_scope.dart';
+import 'services/api_client.dart';
 import 'theme/app_theme.dart';
 import 'utils/responsive.dart';
 import 'widgets/web_nav_bar.dart';
@@ -10,6 +14,9 @@ import 'pages/cart_page.dart';
 import 'pages/profile_page.dart';
 
 final appLocale = AppLocale();
+final apiClient = ApiClient();
+final authProvider = AuthProvider(apiClient);
+final cartProvider = CartProvider();
 
 void main() {
   runApp(const DariosStoreApp());
@@ -20,18 +27,24 @@ class DariosStoreApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppLocaleProvider(
-      locale: appLocale,
-      child: Builder(
-        builder: (context) {
-          final s = S.of(context);
-          return MaterialApp(
-            title: s.appTitle,
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.theme,
-            home: const MainShell(),
-          );
-        },
+    return AuthProviderScope(
+      auth: authProvider,
+      child: CartProviderScope(
+        cart: cartProvider,
+        child: AppLocaleProvider(
+          locale: appLocale,
+          child: Builder(
+            builder: (context) {
+              final s = S.of(context);
+              return MaterialApp(
+                title: s.appTitle,
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.theme,
+                home: const MainShell(),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

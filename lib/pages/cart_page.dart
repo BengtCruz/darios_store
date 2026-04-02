@@ -2,24 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/cart_item.dart';
+import '../providers/provider_scope.dart';
 import '../theme/app_theme.dart';
 
-class CartPage extends StatefulWidget {
+class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   @override
-  State<CartPage> createState() => _CartPageState();
-}
-
-class _CartPageState extends State<CartPage> {
-  // Local cart state for now — will be replaced with proper state management
-  final List<CartItem> _items = [];
-
-  double get _total => _items.fold(0.0, (sum, item) => sum + item.total);
-
-  @override
   Widget build(BuildContext context) {
-    if (_items.isEmpty) {
+    final cart = CartProviderScope.of(context);
+    final items = cart.items;
+
+    if (items.isEmpty) {
       return _buildEmptyCart(context);
     }
 
@@ -31,15 +25,15 @@ class _CartPageState extends State<CartPage> {
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.all(20),
-                itemCount: _items.length,
+                itemCount: items.length,
                 separatorBuilder: (_, __) => const Divider(height: 32),
                 itemBuilder: (context, index) {
-                  final item = _items[index];
-                  return _buildCartItem(context, item, index);
+                  final item = items[index];
+                  return _buildCartItem(context, item);
                 },
               ),
             ),
-            _buildCartSummary(context),
+            _buildCartSummary(context, cart.totalPrice),
           ],
         ),
       ),
@@ -82,7 +76,8 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, CartItem item, int index) {
+  Widget _buildCartItem(BuildContext context, CartItem item) {
+    final cart = CartProviderScope.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -119,13 +114,11 @@ class _CartPageState extends State<CartPage> {
               Row(
                 children: [
                   _quantityButton(Icons.remove, () {
-                    setState(() {
-                      if (item.quantity > 1) {
-                        item.quantity--;
-                      } else {
-                        _items.removeAt(index);
-                      }
-                    });
+                    if (item.quantity > 1) {
+                      cart.updateQuantity(item.product.id, item.quantity - 1);
+                    } else {
+                      cart.removeFromCart(item.product.id);
+                    }
                   }),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -135,7 +128,7 @@ class _CartPageState extends State<CartPage> {
                     ),
                   ),
                   _quantityButton(Icons.add, () {
-                    setState(() => item.quantity++);
+                    cart.updateQuantity(item.product.id, item.quantity + 1);
                   }),
                 ],
               ),
@@ -167,7 +160,7 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  Widget _buildCartSummary(BuildContext context) {
+  Widget _buildCartSummary(BuildContext context, double total) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
@@ -185,7 +178,7 @@ class _CartPageState extends State<CartPage> {
                     ),
               ),
               Text(
-                '€${_total.toStringAsFixed(2)}',
+                '€${total.toStringAsFixed(2)}',
                 style: GoogleFonts.playfairDisplay(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,

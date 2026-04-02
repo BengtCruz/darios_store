@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:postgres/postgres.dart';
 
-import '../db/database.dart';
-import '../models/order.dart';
+import 'package:backend/db/database.dart';
+import 'package:backend/models/order.dart';
 
 class OrderRepository {
-  final Database _db;
 
   OrderRepository(this._db);
+  final Database _db;
 
   Future<List<Order>> findAll({String? status}) async {
     final conn = await _db.connection;
@@ -63,10 +63,8 @@ class OrderRepository {
   }
 
   Future<Order> create({
-    String? customerName,
+    required double totalAmount, required List<OrderItem> items, String? customerName,
     String? customerEmail,
-    required double totalAmount,
-    required List<OrderItem> items,
   }) async {
     final conn = await _db.connection;
 

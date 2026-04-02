@@ -1,8 +1,7 @@
 import 'dart:convert';
 
-import 'package:dart_frog/dart_frog.dart';
-
 import 'package:backend/repositories/product_repository.dart';
+import 'package:dart_frog/dart_frog.dart';
 
 Future<Response> onRequest(RequestContext context, String id) async {
   switch (context.request.method) {

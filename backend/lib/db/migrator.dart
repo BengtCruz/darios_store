@@ -1,11 +1,11 @@
 import 'package:postgres/postgres.dart';
 
-import 'database.dart';
+import 'package:backend/db/database.dart';
 
 class Migrator {
-  final Database _db;
 
   Migrator(this._db);
+  final Database _db;
 
   Future<void> run() async {
     final conn = await _db.connection;
@@ -38,9 +38,9 @@ class Migrator {
 }
 
 class _Migration {
+  const _Migration(this.name, this.sql);
   final String name;
   final String sql;
-  const _Migration(this.name, this.sql);
 }
 
 const _migrations = <_Migration>[
@@ -131,6 +131,29 @@ const _migrations = <_Migration>[
       ('Pesto alla Genovese', 'Classic Ligurian basil pesto with Parmigiano, Pecorino, pine nuts, and Ligurian extra virgin olive oil.', 9.80, 'https://picsum.photos/seed/sauce2/400/400', 'Sauces', 4.6, true),
       ('Cantucci alle Mandorle', 'Traditional Tuscan almond biscotti. Twice-baked for the perfect crunch, ideal with Vin Santo.', 8.90, 'https://picsum.photos/seed/sweet1/400/400', 'Sweets', 4.5, false),
       ('Panettone Classico', 'Milanese Christmas cake with candied fruits and raisins. Slow-risen for 72 hours for ultimate softness.', 28.00, 'https://picsum.photos/seed/sweet2/400/400', 'Sweets', 4.8, true)
+    ''',
+  ),
+  _Migration(
+    '007_create_users',
+    '''
+    CREATE TABLE users (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      email TEXT NOT NULL UNIQUE,
+      name TEXT NOT NULL,
+      password_hash TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'customer',
+      is_active BOOLEAN DEFAULT true,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+    ''',
+  ),
+  _Migration(
+    '008_seed_admin_user',
+    r'''
+    INSERT INTO users (email, name, password_hash, role) VALUES
+      ('admin@darios.store', 'Dario', '$2b$10$DyJCqgJB8BXNJ88aRxmf0O7SawmBwnxv9SEk80SSbYjQDGCIhc8Ri', 'admin')
+    ON CONFLICT (email) DO NOTHING
     ''',
   ),
 ];

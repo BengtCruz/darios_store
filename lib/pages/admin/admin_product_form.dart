@@ -160,7 +160,7 @@ class _AdminProductFormState extends State<AdminProductForm> {
                           title: Text(s.formProductActive),
                           subtitle: Text(s.formProductActiveDesc),
                           value: _isActive,
-                          activeColor: AppTheme.nero,
+                          activeThumbColor: AppTheme.nero,
                           onChanged: (v) => setState(() => _isActive = v),
                         ),
                         const Divider(),
@@ -169,7 +169,7 @@ class _AdminProductFormState extends State<AdminProductForm> {
                           subtitle:
                               Text(s.formProductFeaturedDesc),
                           value: _isFeatured,
-                          activeColor: AppTheme.nero,
+                          activeThumbColor: AppTheme.nero,
                           onChanged: (v) => setState(() => _isFeatured = v),
                         ),
                       ],

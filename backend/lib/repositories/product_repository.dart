@@ -1,12 +1,12 @@
 import 'package:postgres/postgres.dart';
 
-import '../db/database.dart';
-import '../models/product.dart';
+import 'package:backend/db/database.dart';
+import 'package:backend/models/product.dart';
 
 class ProductRepository {
-  final Database _db;
 
   ProductRepository(this._db);
+  final Database _db;
 
   Future<List<Product>> findAll({
     String? category,

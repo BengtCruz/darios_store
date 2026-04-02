@@ -125,7 +125,7 @@ class _AdminCategoriesPageState extends State<AdminCategoriesPage> {
                 SwitchListTile(
                   title: Text(s.formActive),
                   value: isActive,
-                  activeColor: AppTheme.nero,
+                  activeThumbColor: AppTheme.nero,
                   onChanged: (v) => setDialogState(() => isActive = v),
                 ),
               ],

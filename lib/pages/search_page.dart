@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../data/mock_products.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
+import '../services/api_client.dart';
 import '../theme/app_theme.dart';
 import 'product_detail_page.dart';
 
@@ -13,8 +13,26 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final _api = ApiClient();
   final _controller = TextEditingController();
+  List<Product> _allProducts = [];
   List<Product> _results = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    try {
+      final data = await _api.getProducts();
+      if (!mounted) return;
+      setState(() {
+        _allProducts = data.map((j) => Product.fromJson(j)).toList();
+      });
+    } catch (_) {}
+  }
 
   void _search(String query) {
     if (query.isEmpty) {
@@ -23,7 +41,7 @@ class _SearchPageState extends State<SearchPage> {
     }
     final lower = query.toLowerCase();
     setState(() {
-      _results = mockProducts
+      _results = _allProducts
           .where((p) =>
               p.name.toLowerCase().contains(lower) ||
               p.category.toLowerCase().contains(lower) ||

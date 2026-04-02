@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../data/mock_products.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
+import '../services/api_client.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
 import 'product_detail_page.dart';
@@ -14,11 +14,43 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
+  final _api = ApiClient();
+  List<Product> _products = [];
+  List<String> _categories = [];
   String? _selectedCategory;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    try {
+      final results = await Future.wait([
+        _api.getProducts(),
+        _api.getCategories(),
+      ]);
+      if (!mounted) return;
+      setState(() {
+        _products = results[0]
+            .map((j) => Product.fromJson(j))
+            .toList();
+        _categories = results[1]
+            .map((j) => j['name'] as String)
+            .toList();
+        _loading = false;
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() => _loading = false);
+    }
+  }
 
   List<Product> get _filteredProducts {
-    if (_selectedCategory == null) return mockProducts;
-    return mockProducts
+    if (_selectedCategory == null) return _products;
+    return _products
         .where((p) => p.category == _selectedCategory)
         .toList();
   }
@@ -29,6 +61,12 @@ class _CatalogPageState extends State<CatalogPage> {
     final columns = Responsive.gridColumns(context);
     final hPad = isWide ? 32.0 : 20.0;
     final s = S.of(context);
+
+    if (_loading) {
+      return const Center(
+        child: CircularProgressIndicator(color: AppTheme.nero),
+      );
+    }
 
     return Center(
       child: ConstrainedBox(
@@ -44,7 +82,7 @@ class _CatalogPageState extends State<CatalogPage> {
                 padding: EdgeInsets.symmetric(horizontal: hPad),
                 children: [
                   _buildFilterChip(s.catalogAll, null),
-                  ...categories.map((c) => _buildFilterChip(c, c)),
+                  ..._categories.map((c) => _buildFilterChip(c, c)),
                 ],
               ),
             ),

@@ -1,12 +1,12 @@
 import 'package:postgres/postgres.dart';
 
-import '../db/database.dart';
-import '../models/category.dart';
+import 'package:backend/db/database.dart';
+import 'package:backend/models/category.dart';
 
 class CategoryRepository {
-  final Database _db;
 
   CategoryRepository(this._db);
+  final Database _db;
 
   Future<List<Category>> findAll({bool? isActive}) async {
     final conn = await _db.connection;

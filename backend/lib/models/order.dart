@@ -4,14 +4,6 @@ part 'order.g.dart';
 
 @JsonSerializable()
 class Order {
-  final String id;
-  final String? customerName;
-  final String? customerEmail;
-  final String status;
-  final double totalAmount;
-  final List<OrderItem> items;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
   const Order({
     required this.id,
@@ -25,16 +17,20 @@ class Order {
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
+  final String id;
+  final String? customerName;
+  final String? customerEmail;
+  final String status;
+  final double totalAmount;
+  final List<OrderItem> items;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   Map<String, dynamic> toJson() => _$OrderToJson(this);
 }
 
 @JsonSerializable()
 class OrderItem {
-  final String productId;
-  final String productName;
-  final double price;
-  final int quantity;
 
   const OrderItem({
     required this.productId,
@@ -45,6 +41,10 @@ class OrderItem {
 
   factory OrderItem.fromJson(Map<String, dynamic> json) =>
       _$OrderItemFromJson(json);
+  final String productId;
+  final String productName;
+  final double price;
+  final int quantity;
 
   Map<String, dynamic> toJson() => _$OrderItemToJson(this);
 }

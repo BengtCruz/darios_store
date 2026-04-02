@@ -24,7 +24,7 @@ Future<Response> _get(RequestContext context) async {
   final products = await repo.findAll(
     category: params['category'],
     isFeatured: params['featured'] == 'true' ? true : null,
-    isActive: params['active'] == 'false' ? false : true,
+    isActive: params['active'] == 'false' ? false : null,
     orderBy: params['order_by'] ?? 'created_at',
     descending: params['order'] != 'asc',
   );

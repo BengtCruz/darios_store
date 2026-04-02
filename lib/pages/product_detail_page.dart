@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
-import '../providers/cart_provider.dart';
+import '../providers/provider_scope.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
 
@@ -189,7 +189,7 @@ class ProductDetailPage extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              CartProvider().addToCart(product);
+              CartProviderScope.of(context).addToCart(product);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(

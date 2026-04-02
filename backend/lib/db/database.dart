@@ -16,10 +16,10 @@ class Database {
     _connection = await Connection.open(
       Endpoint(
         host: Platform.environment['DB_HOST'] ?? 'localhost',
-        port: int.parse(Platform.environment['DB_PORT'] ?? '5432'),
+        port: int.parse(Platform.environment['DB_PORT'] ?? '8080'),
         database: Platform.environment['DB_NAME'] ?? 'darios_store',
         username: Platform.environment['DB_USER'] ?? 'postgres',
-        password: Platform.environment['DB_PASSWORD'] ?? 'postgres',
+        password: Platform.environment['DB_PASSWORD'] ?? 'admin123',
       ),
       settings: const ConnectionSettings(sslMode: SslMode.disable),
     );

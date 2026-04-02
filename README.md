@@ -52,10 +52,12 @@ lib/
 
 ## Tech Stack
 
-- **Framework:** Flutter
+- **Framework:** Flutter 3.x (Material 3)
 - **Language:** Dart
-- **State Management:** TBD
-- **Backend:** TBD
+- **State Management:** InheritedNotifier (CartProviderScope, AuthProviderScope, AppLocaleProvider)
+- **Backend:** Dart Frog with PostgreSQL
+- **Authentication:** bcrypt password hashing + JWT tokens
+- **Localization:** Custom EN/SV system
 
 ## License
 

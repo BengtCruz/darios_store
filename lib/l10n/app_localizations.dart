@@ -97,6 +97,10 @@ class S {
   String get detailShippingValue => 'Free over 50 kr';
   String get detailReturns => 'Returns';
   String get detailReturnsValue => '30 days';
+  String get detailInStock => 'In Stock';
+  String get detailOutOfStock => 'Out of Stock';
+  String detailStockCount(int count) => '$count in stock';
+  String stockLimitReached(String name) => 'Cannot add more $name — stock limit reached';
 
   // --- Footer ---
   String get footerTagline => 'Authentic Italian flavors,\ndelivered to your door.';
@@ -151,6 +155,7 @@ class S {
   String get tableHeaderName => 'NAME';
   String get tableHeaderCategory => 'CATEGORY';
   String get tableHeaderPrice => 'PRICE';
+  String get tableHeaderStock => 'STOCK';
   String get tableHeaderActive => 'ACTIVE';
   String get tableHeaderFeatured => 'FEATURED';
   String get tableHeaderActions => 'ACTIONS';
@@ -213,6 +218,8 @@ class S {
   String get formProductCategory => 'Category *';
   String get formProductImageUrl => 'Image URL';
   String get formProductRating => 'Rating';
+  String get formProductStock => 'Stock Quantity *';
+  String get formInvalidStock => 'Invalid stock quantity';
   String get formProductActive => 'Active Product';
   String get formProductActiveDesc => 'Visible in store';
   String get formProductFeatured => 'Featured';
@@ -345,6 +352,10 @@ class _Sv extends S {
   @override String get detailShippingValue => 'Gratis över 50 kr';
   @override String get detailReturns => 'Retur';
   @override String get detailReturnsValue => '30 dagar';
+  @override String get detailInStock => 'I lager';
+  @override String get detailOutOfStock => 'Slut i lager';
+  @override String detailStockCount(int count) => '$count i lager';
+  @override String stockLimitReached(String name) => 'Kan inte lägga till fler $name — lagergränsen nådd';
 
   // --- Footer ---
   @override String get footerTagline => 'Autentiska italienska smaker,\nlevererade till din dörr.';
@@ -399,6 +410,7 @@ class _Sv extends S {
   @override String get tableHeaderName => 'NAMN';
   @override String get tableHeaderCategory => 'KATEGORI';
   @override String get tableHeaderPrice => 'PRIS';
+  @override String get tableHeaderStock => 'LAGER';
   @override String get tableHeaderActive => 'AKTIV';
   @override String get tableHeaderFeatured => 'UTVALD';
   @override String get tableHeaderActions => 'ÅTGÄRDER';
@@ -461,6 +473,8 @@ class _Sv extends S {
   @override String get formProductCategory => 'Kategori *';
   @override String get formProductImageUrl => 'Bild-URL';
   @override String get formProductRating => 'Betyg';
+  @override String get formProductStock => 'Lagerantal *';
+  @override String get formInvalidStock => 'Ogiltigt lagerantal';
   @override String get formProductActive => 'Aktiv Produkt';
   @override String get formProductActiveDesc => 'Synlig i butiken';
   @override String get formProductFeatured => 'Utvald';

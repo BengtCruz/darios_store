@@ -166,6 +166,16 @@ class ProductDetailPage extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 8),
+        Text(
+          product.stock > 0
+              ? S.of(context).detailStockCount(product.stock)
+              : S.of(context).detailOutOfStock,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: product.stock > 0 ? Colors.green : Colors.red,
+                fontWeight: FontWeight.w600,
+              ),
+        ),
         const Divider(height: 32),
 
         // Description
@@ -188,12 +198,14 @@ class ProductDetailPage extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {
-              CartProviderScope.of(context).addToCart(product);
+            onPressed: product.stock <= 0 ? null : () {
+              final added = CartProviderScope.of(context).addToCart(product);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    S.of(context).detailAddedToCart(product.name),
+                    added
+                        ? S.of(context).detailAddedToCart(product.name)
+                        : S.of(context).stockLimitReached(product.name),
                     style: GoogleFonts.lato(color: AppTheme.bianco),
                   ),
                   backgroundColor: AppTheme.nero,
@@ -201,18 +213,20 @@ class ProductDetailPage extends StatelessWidget {
                   duration: const Duration(seconds: 2),
                 ),
               );
-              Navigator.of(context).pop();
+              if (added) Navigator.of(context).pop();
             },
-            child: Text(S.of(context).detailAddToCart),
+            child: Text(product.stock <= 0
+                ? S.of(context).detailOutOfStock
+                : S.of(context).detailAddToCart),
           ),
         ),
         const SizedBox(height: 12),
         SizedBox(
           width: double.infinity,
           child: OutlinedButton(
-            onPressed: () {
-              CartProviderScope.of(context).addToCart(product);
-              Navigator.of(context).pop();
+            onPressed: product.stock <= 0 ? null : () {
+              final added = CartProviderScope.of(context).addToCart(product);
+              if (added) Navigator.of(context).pop();
             },
             child: Text(S.of(context).detailBuyNow),
           ),

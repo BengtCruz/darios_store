@@ -241,11 +241,13 @@ class _CatalogProductCard extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {
-                  CartProviderScope.of(context).addToCart(product);
+                  final added = CartProviderScope.of(context).addToCart(product);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                        S.of(context).detailAddedToCart(product.name),
+                        added
+                            ? S.of(context).detailAddedToCart(product.name)
+                            : S.of(context).stockLimitReached(product.name),
                         style: const TextStyle(color: AppTheme.bianco),
                       ),
                       backgroundColor: AppTheme.nero,

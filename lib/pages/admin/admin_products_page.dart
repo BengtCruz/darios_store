@@ -157,6 +157,7 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
             DataColumn(label: Text(s.tableHeaderName, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
             DataColumn(label: Text(s.tableHeaderCategory, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
             DataColumn(label: Text(s.tableHeaderPrice, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1)), numeric: true),
+            DataColumn(label: Text(s.tableHeaderStock, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1)), numeric: true),
             DataColumn(label: Text(s.tableHeaderActive, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
             DataColumn(label: Text(s.tableHeaderFeatured, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
             DataColumn(label: Text(s.tableHeaderActions, style: const TextStyle(fontWeight: FontWeight.w700, letterSpacing: 1))),
@@ -172,6 +173,7 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
                 ),
                 DataCell(Text(p['category'] as String? ?? '')),
                 DataCell(Text('${(p['price'] as num? ?? 0).toStringAsFixed(2)} kr')),
+                DataCell(Text('${p['stock'] as int? ?? 0}')),
                 DataCell(
                   Icon(
                     (p['isActive'] as bool? ?? true) ? Icons.check_circle : Icons.cancel,

@@ -67,12 +67,13 @@ class ProductRepository {
     required String category,
     double rating = 0,
     bool isFeatured = false,
+    int stock = 0,
   }) async {
     final conn = await _db.connection;
     final result = await conn.execute(
       Sql.named('''
-        INSERT INTO products (name, description, price, image_url, category, rating, is_featured)
-        VALUES (@name, @description, @price, @image_url, @category, @rating, @is_featured)
+        INSERT INTO products (name, description, price, image_url, category, rating, is_featured, stock)
+        VALUES (@name, @description, @price, @image_url, @category, @rating, @is_featured, @stock)
         RETURNING *
       '''),
       parameters: {
@@ -83,6 +84,7 @@ class ProductRepository {
         'category': category,
         'rating': rating,
         'is_featured': isFeatured,
+        'stock': stock,
       },
     );
     return _rowToProduct(result.first);
@@ -98,6 +100,7 @@ class ProductRepository {
     double? rating,
     bool? isFeatured,
     bool? isActive,
+    int? stock,
   }) async {
     final sets = <String>[];
     final params = <String, Object?>{'id': id};
@@ -110,6 +113,7 @@ class ProductRepository {
     if (rating != null) { sets.add('rating = @rating'); params['rating'] = rating; }
     if (isFeatured != null) { sets.add('is_featured = @is_featured'); params['is_featured'] = isFeatured; }
     if (isActive != null) { sets.add('is_active = @is_active'); params['is_active'] = isActive; }
+    if (stock != null) { sets.add('stock = @stock'); params['stock'] = stock; }
 
     if (sets.isEmpty) return findById(id);
 
@@ -163,6 +167,7 @@ class ProductRepository {
           : double.parse(m['rating'].toString()),
       isFeatured: m['is_featured'] as bool? ?? false,
       isActive: m['is_active'] as bool? ?? true,
+      stock: (m['stock'] as int?) ?? 0,
       createdAt: m['created_at'] as DateTime,
       updatedAt: m['updated_at'] as DateTime,
     );

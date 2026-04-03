@@ -41,6 +41,7 @@ Future<Response> _put(RequestContext context, String id) async {
     rating: (body['rating'] as num?)?.toDouble(),
     isFeatured: body['isFeatured'] as bool?,
     isActive: body['isActive'] as bool?,
+    stock: (body['stock'] as num?)?.toInt(),
   );
 
   if (product == null) {

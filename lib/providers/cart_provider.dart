@@ -11,14 +11,17 @@ class CartProvider extends ChangeNotifier {
 
   double get totalPrice => _items.fold(0.0, (sum, item) => sum + item.total);
 
-  void addToCart(Product product) {
+  bool addToCart(Product product) {
     final index = _items.indexWhere((item) => item.product.id == product.id);
     if (index >= 0) {
+      if (_items[index].quantity >= product.stock) return false;
       _items[index].quantity++;
     } else {
+      if (product.stock <= 0) return false;
       _items.add(CartItem(product: product));
     }
     notifyListeners();
+    return true;
   }
 
   void removeFromCart(String productId) {
@@ -32,7 +35,8 @@ class CartProvider extends ChangeNotifier {
       if (quantity <= 0) {
         _items.removeAt(index);
       } else {
-        _items[index].quantity = quantity;
+        final stock = _items[index].product.stock;
+        _items[index].quantity = quantity > stock ? stock : quantity;
       }
       notifyListeners();
     }

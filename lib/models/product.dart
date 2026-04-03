@@ -8,6 +8,7 @@ class Product {
   final double rating;
   final bool isFeatured;
   final bool isActive;
+  final int stock;
 
   const Product({
     required this.id,
@@ -19,6 +20,7 @@ class Product {
     this.rating = 0.0,
     this.isFeatured = false,
     this.isActive = true,
+    this.stock = 0,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class Product {
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       isFeatured: json['isFeatured'] as bool? ?? false,
       isActive: json['isActive'] as bool? ?? true,
+      stock: (json['stock'] as num?)?.toInt() ?? 0,
     );
   }
 
@@ -45,5 +48,6 @@ class Product {
         'rating': rating,
         'isFeatured': isFeatured,
         'isActive': isActive,
+        'stock': stock,
       };
 }

@@ -129,7 +129,7 @@ class CartPage extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
-                  _quantityButton(Icons.add, () {
+                  _quantityButton(Icons.add, item.quantity >= item.product.stock ? null : () {
                     cart.updateQuantity(item.product.id, item.quantity + 1);
                   }),
                 ],
@@ -148,7 +148,7 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  Widget _quantityButton(IconData icon, VoidCallback onPressed) {
+  Widget _quantityButton(IconData icon, VoidCallback? onPressed) {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -157,7 +157,7 @@ class CartPage extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: AppTheme.grigioChiaro, width: 1.5),
         ),
-        child: Icon(icon, size: 16),
+        child: Icon(icon, size: 16, color: onPressed == null ? AppTheme.grigioChiaro : null),
       ),
     );
   }

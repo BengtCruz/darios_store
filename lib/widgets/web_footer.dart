@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
@@ -31,7 +30,8 @@ class WebFooter extends StatelessWidget {
                       children: [
                         Text(
                           "DARIO'S STORE",
-                          style: GoogleFonts.playfairDisplay(
+                          style: TextStyle(
+                            fontFamily: 'Playfair Display',
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
                             color: AppTheme.bianco,
@@ -41,7 +41,8 @@ class WebFooter extends StatelessWidget {
                         const SizedBox(height: 12),
                         Text(
                           S.of(context).footerTagline,
-                          style: GoogleFonts.lato(
+                          style: TextStyle(
+                            fontFamily: 'Lato',
                             fontSize: 14,
                             color: AppTheme.grigio,
                             height: 1.6,
@@ -82,7 +83,8 @@ class WebFooter extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 S.of(context).footerCopyright,
-                style: GoogleFonts.lato(
+                style: TextStyle(
+                  fontFamily: 'Lato',
                   fontSize: 12,
                   color: AppTheme.grigio,
                 ),
@@ -101,7 +103,8 @@ class WebFooter extends StatelessWidget {
       children: [
         Text(
           title,
-          style: GoogleFonts.lato(
+          style: TextStyle(
+            fontFamily: 'Lato',
             fontSize: 12,
             fontWeight: FontWeight.w700,
             color: AppTheme.bianco,
@@ -116,7 +119,8 @@ class WebFooter extends StatelessWidget {
               cursor: SystemMouseCursors.click,
               child: Text(
                 link,
-                style: GoogleFonts.lato(
+                style: TextStyle(
+                  fontFamily: 'Lato',
                   fontSize: 13,
                   color: AppTheme.grigio,
                 ),

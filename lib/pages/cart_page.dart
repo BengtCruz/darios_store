@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../models/cart_item.dart';
@@ -181,7 +180,8 @@ class CartPage extends StatelessWidget {
               ),
               Text(
                 '${total.toStringAsFixed(2)} kr',
-                style: GoogleFonts.playfairDisplay(
+                style: TextStyle(
+                  fontFamily: 'Playfair Display',
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
                   color: AppTheme.nero,

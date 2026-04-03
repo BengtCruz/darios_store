@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/provider_scope.dart';
@@ -152,7 +151,8 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text(
                   S.of(context).heroTitle,
-                  style: GoogleFonts.playfairDisplay(
+                  style: TextStyle(
+                    fontFamily: 'Playfair Display',
                     fontSize: isWide ? 64 : 42,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.bianco,
@@ -162,7 +162,8 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 16),
                 Text(
                   S.of(context).heroSubtitle,
-                  style: GoogleFonts.lato(
+                  style: TextStyle(
+                    fontFamily: 'Lato',
                     fontSize: isWide ? 18 : 16,
                     color: AppTheme.grigioChiaro,
                     height: 1.5,

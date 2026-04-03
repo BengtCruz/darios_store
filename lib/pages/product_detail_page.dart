@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/provider_scope.dart';
@@ -142,7 +141,8 @@ class ProductDetailPage extends StatelessWidget {
         // Name
         Text(
           product.name,
-          style: GoogleFonts.playfairDisplay(
+          style: TextStyle(
+            fontFamily: 'Playfair Display',
             fontSize: 28,
             fontWeight: FontWeight.w700,
             color: AppTheme.nero,
@@ -206,14 +206,13 @@ class ProductDetailPage extends StatelessWidget {
                     added
                         ? S.of(context).detailAddedToCart(product.name)
                         : S.of(context).stockLimitReached(product.name),
-                    style: GoogleFonts.lato(color: AppTheme.bianco),
+                    style: TextStyle(fontFamily: 'Lato', color: AppTheme.bianco),
                   ),
                   backgroundColor: AppTheme.nero,
                   behavior: SnackBarBehavior.floating,
                   duration: const Duration(seconds: 2),
                 ),
               );
-              if (added) Navigator.of(context).pop();
             },
             child: Text(product.stock <= 0
                 ? S.of(context).detailOutOfStock
@@ -225,8 +224,7 @@ class ProductDetailPage extends StatelessWidget {
           width: double.infinity,
           child: OutlinedButton(
             onPressed: product.stock <= 0 ? null : () {
-              final added = CartProviderScope.of(context).addToCart(product);
-              if (added) Navigator.of(context).pop();
+              CartProviderScope.of(context).addToCart(product);
             },
             child: Text(S.of(context).detailBuyNow),
           ),

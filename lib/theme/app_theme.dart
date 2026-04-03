@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const Color nero = Color(0xFF1A1A1A);
@@ -28,7 +27,8 @@ class AppTheme {
         elevation: 0,
         scrolledUnderElevation: 0.5,
         centerTitle: true,
-        titleTextStyle: GoogleFonts.playfairDisplay(
+        titleTextStyle: TextStyle(
+          fontFamily: 'Playfair Display',
           fontSize: 22,
           fontWeight: FontWeight.w700,
           color: nero,
@@ -36,47 +36,56 @@ class AppTheme {
         ),
       ),
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.playfairDisplay(
+        displayLarge: TextStyle(
+          fontFamily: 'Playfair Display',
           fontSize: 32,
           fontWeight: FontWeight.w700,
           color: nero,
         ),
-        displayMedium: GoogleFonts.playfairDisplay(
+        displayMedium: TextStyle(
+          fontFamily: 'Playfair Display',
           fontSize: 28,
           fontWeight: FontWeight.w600,
           color: nero,
         ),
-        headlineLarge: GoogleFonts.playfairDisplay(
+        headlineLarge: TextStyle(
+          fontFamily: 'Playfair Display',
           fontSize: 24,
           fontWeight: FontWeight.w700,
           color: nero,
         ),
-        headlineMedium: GoogleFonts.playfairDisplay(
+        headlineMedium: TextStyle(
+          fontFamily: 'Playfair Display',
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: nero,
         ),
-        titleLarge: GoogleFonts.lato(
+        titleLarge: TextStyle(
+          fontFamily: 'Lato',
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: nero,
         ),
-        titleMedium: GoogleFonts.lato(
+        titleMedium: TextStyle(
+          fontFamily: 'Lato',
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: nero,
         ),
-        bodyLarge: GoogleFonts.lato(
+        bodyLarge: TextStyle(
+          fontFamily: 'Lato',
           fontSize: 16,
           fontWeight: FontWeight.w400,
           color: nero,
         ),
-        bodyMedium: GoogleFonts.lato(
+        bodyMedium: TextStyle(
+          fontFamily: 'Lato',
           fontSize: 14,
           fontWeight: FontWeight.w400,
           color: grigio,
         ),
-        labelLarge: GoogleFonts.lato(
+        labelLarge: TextStyle(
+          fontFamily: 'Lato',
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: nero,
@@ -92,7 +101,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0),
           ),
-          textStyle: GoogleFonts.lato(
+          textStyle: TextStyle(
+            fontFamily: 'Lato',
             fontSize: 14,
             fontWeight: FontWeight.w600,
             letterSpacing: 1.5,
@@ -107,7 +117,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0),
           ),
-          textStyle: GoogleFonts.lato(
+          textStyle: TextStyle(
+            fontFamily: 'Lato',
             fontSize: 14,
             fontWeight: FontWeight.w600,
             letterSpacing: 1.5,

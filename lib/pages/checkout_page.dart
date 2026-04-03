@@ -167,7 +167,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         ),
                         Text(
                           '${cart.totalPrice.toStringAsFixed(2)} kr',
-                          style: GoogleFonts.playfairDisplay(
+                          style: TextStyle(
+                            fontFamily: 'Playfair Display',
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
                             color: AppTheme.nero,

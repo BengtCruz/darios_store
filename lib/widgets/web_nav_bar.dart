@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/provider_scope.dart';
 import '../theme/app_theme.dart';
@@ -45,7 +44,8 @@ class WebNavBar extends StatelessWidget implements PreferredSizeWidget {
                         const SizedBox(width: 12),
                         Text(
                           "DARIO'S STORE",
-                          style: GoogleFonts.playfairDisplay(
+                          style: TextStyle(
+                            fontFamily: 'Playfair Display',
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                             color: AppTheme.nero,
@@ -143,7 +143,8 @@ class _NavLinkState extends State<_NavLink> {
             ),
             child: Text(
               widget.label,
-              style: GoogleFonts.lato(
+              style: TextStyle(
+                fontFamily: 'Lato',
                 fontSize: 13,
                 fontWeight:
                     widget.isActive ? FontWeight.w700 : FontWeight.w500,
@@ -238,23 +239,28 @@ class _CartNavIconState extends State<_CartNavIcon> {
         onExit: (_) => setState(() => _hovering = false),
         child: GestureDetector(
           onTap: widget.onTap,
-          child: Container(
+          child: SizedBox(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(
-              color: _hovering
-                  ? AppTheme.grigioChiaro.withValues(alpha: 0.5)
-                  : Colors.transparent,
-              shape: BoxShape.circle,
-            ),
-            child: Badge(
-              isLabelVisible: count > 0,
-              label: Text('$count'),
-              backgroundColor: AppTheme.nero,
-              child: Icon(
-                Icons.shopping_bag_outlined,
-                size: 22,
-                color: widget.isActive ? AppTheme.nero : AppTheme.grigio,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: _hovering
+                    ? AppTheme.grigioChiaro.withValues(alpha: 0.5)
+                    : Colors.transparent,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Badge(
+                  isLabelVisible: count > 0,
+                  offset: const Offset(10, -6),
+                  label: Text('$count'),
+                  backgroundColor: AppTheme.nero,
+                  child: Icon(
+                    Icons.shopping_bag_outlined,
+                    size: 22,
+                    color: widget.isActive ? AppTheme.nero : AppTheme.grigio,
+                  ),
+                ),
               ),
             ),
           ),

@@ -24,6 +24,7 @@ class _AdminProductFormState extends State<AdminProductForm> {
   late final TextEditingController _imageUrlCtrl;
   late final TextEditingController _categoryCtrl;
   late final TextEditingController _ratingCtrl;
+  late final TextEditingController _stockCtrl;
   late bool _isFeatured;
   late bool _isActive;
   bool _saving = false;
@@ -42,6 +43,9 @@ class _AdminProductFormState extends State<AdminProductForm> {
     _ratingCtrl = TextEditingController(
       text: p != null ? (p['rating'] as num? ?? 0).toString() : '0',
     );
+    _stockCtrl = TextEditingController(
+      text: p != null ? (p['stock'] as num? ?? 0).toString() : '0',
+    );
     _isFeatured = p?['isFeatured'] as bool? ?? false;
     _isActive = p?['isActive'] as bool? ?? true;
   }
@@ -54,6 +58,7 @@ class _AdminProductFormState extends State<AdminProductForm> {
     _imageUrlCtrl.dispose();
     _categoryCtrl.dispose();
     _ratingCtrl.dispose();
+    _stockCtrl.dispose();
     super.dispose();
   }
 
@@ -71,6 +76,7 @@ class _AdminProductFormState extends State<AdminProductForm> {
       'rating': double.tryParse(_ratingCtrl.text.trim()) ?? 0,
       'isFeatured': _isFeatured,
       'isActive': _isActive,
+      'stock': int.tryParse(_stockCtrl.text.trim()) ?? 0,
     };
 
     try {
@@ -146,6 +152,11 @@ class _AdminProductFormState extends State<AdminProductForm> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 16),
+
+                  _buildField(s.formProductStock, _stockCtrl,
+                      keyboardType: TextInputType.number,
+                      validator: _validateStock),
                   const SizedBox(height: 20),
 
                   // Toggles
@@ -242,6 +253,13 @@ class _AdminProductFormState extends State<AdminProductForm> {
   String? _validatePrice(String? value) {
     if (value == null || value.trim().isEmpty) return S.of(context).formFieldRequired;
     if (double.tryParse(value.trim()) == null) return S.of(context).formInvalidPrice;
+    return null;
+  }
+
+  String? _validateStock(String? value) {
+    if (value == null || value.trim().isEmpty) return S.of(context).formFieldRequired;
+    final n = int.tryParse(value.trim());
+    if (n == null || n < 0) return S.of(context).formInvalidStock;
     return null;
   }
 }

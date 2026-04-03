@@ -156,4 +156,10 @@ const _migrations = <_Migration>[
     ON CONFLICT (email) DO NOTHING
     ''',
   ),
+  _Migration(
+    '009_add_stock_to_products',
+    '''
+    ALTER TABLE products ADD COLUMN IF NOT EXISTS stock INTEGER NOT NULL DEFAULT 0
+    ''',
+  ),
 ];

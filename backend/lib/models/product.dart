@@ -15,6 +15,7 @@ class Product {
     this.rating = 0.0,
     this.isFeatured = false,
     this.isActive = true,
+    this.stock = 0,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -30,6 +31,7 @@ class Product {
   final double rating;
   final bool isFeatured;
   final bool isActive;
+  final int stock;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -44,6 +46,7 @@ class Product {
     double? rating,
     bool? isFeatured,
     bool? isActive,
+    int? stock,
   }) {
     return Product(
       id: id,
@@ -55,6 +58,7 @@ class Product {
       rating: rating ?? this.rating,
       isFeatured: isFeatured ?? this.isFeatured,
       isActive: isActive ?? this.isActive,
+      stock: stock ?? this.stock,
       createdAt: createdAt,
       updatedAt: DateTime.now().toUtc(),
     );

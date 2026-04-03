@@ -58,6 +58,7 @@ Future<Response> _post(RequestContext context) async {
     category: category,
     rating: (body['rating'] as num?)?.toDouble() ?? 0,
     isFeatured: body['isFeatured'] as bool? ?? false,
+    stock: (body['stock'] as num?)?.toInt() ?? 0,
   );
 
   return Response.json(statusCode: 201, body: product.toJson());

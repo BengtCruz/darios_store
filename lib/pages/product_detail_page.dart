@@ -210,7 +210,10 @@ class ProductDetailPage extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: OutlinedButton(
-            onPressed: () {},
+            onPressed: () {
+              CartProviderScope.of(context).addToCart(product);
+              Navigator.of(context).pop();
+            },
             child: Text(S.of(context).detailBuyNow),
           ),
         ),

@@ -171,7 +171,7 @@ class _AdminProductsPageState extends State<AdminProductsPage> {
                   ),
                 ),
                 DataCell(Text(p['category'] as String? ?? '')),
-                DataCell(Text('€${(p['price'] as num? ?? 0).toStringAsFixed(2)}')),
+                DataCell(Text('${(p['price'] as num? ?? 0).toStringAsFixed(2)} kr')),
                 DataCell(
                   Icon(
                     (p['isActive'] as bool? ?? true) ? Icons.check_circle : Icons.cancel,

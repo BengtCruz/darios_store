@@ -94,7 +94,7 @@ class S {
   String get detailCategory => 'Category';
   String get detailRating => 'Rating';
   String get detailShipping => 'Shipping';
-  String get detailShippingValue => 'Free over €50';
+  String get detailShippingValue => 'Free over 50 kr';
   String get detailReturns => 'Returns';
   String get detailReturnsValue => '30 days';
 
@@ -209,7 +209,7 @@ class S {
   String get formNewProduct => 'New Product';
   String get formProductName => 'Name *';
   String get formProductDescription => 'Description *';
-  String get formProductPrice => 'Price (€) *';
+  String get formProductPrice => 'Price (kr) *';
   String get formProductCategory => 'Category *';
   String get formProductImageUrl => 'Image URL';
   String get formProductRating => 'Rating';
@@ -342,7 +342,7 @@ class _Sv extends S {
   @override String get detailCategory => 'Kategori';
   @override String get detailRating => 'Betyg';
   @override String get detailShipping => 'Frakt';
-  @override String get detailShippingValue => 'Gratis över €50';
+  @override String get detailShippingValue => 'Gratis över 50 kr';
   @override String get detailReturns => 'Retur';
   @override String get detailReturnsValue => '30 dagar';
 
@@ -457,7 +457,7 @@ class _Sv extends S {
   @override String get formNewProduct => 'Ny Produkt';
   @override String get formProductName => 'Namn *';
   @override String get formProductDescription => 'Beskrivning *';
-  @override String get formProductPrice => 'Pris (€) *';
+  @override String get formProductPrice => 'Pris (kr) *';
   @override String get formProductCategory => 'Kategori *';
   @override String get formProductImageUrl => 'Bild-URL';
   @override String get formProductRating => 'Betyg';

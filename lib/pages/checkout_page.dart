@@ -147,7 +147,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 ),
                               ),
                               Text(
-                                '€${item.total.toStringAsFixed(2)}',
+                                '${item.total.toStringAsFixed(2)} kr',
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -166,7 +166,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               ),
                         ),
                         Text(
-                          '€${cart.totalPrice.toStringAsFixed(2)}',
+                          '${cart.totalPrice.toStringAsFixed(2)} kr',
                           style: GoogleFonts.playfairDisplay(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,

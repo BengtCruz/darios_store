@@ -128,7 +128,7 @@ class _AdminOrdersPageState extends State<AdminOrdersPage> {
                 _detailRow(s.orderCustomer, order['customerName'] as String? ?? '—'),
                 _detailRow(s.orderEmail, order['customerEmail'] as String? ?? '—'),
                 _detailRow(s.orderStatus, labels[order['status']] ?? order['status'] as String? ?? ''),
-                _detailRow(s.orderTotal, '€${(order['totalAmount'] as num? ?? 0).toStringAsFixed(2)}'),
+                _detailRow(s.orderTotal, '${(order['totalAmount'] as num? ?? 0).toStringAsFixed(2)} kr'),
                 if (date != null) _detailRow(s.orderDate, DateFormat('dd/MM/yyyy HH:mm').format(date)),
                 const Divider(height: 24),
                 Text(s.orderItems, style: const TextStyle(fontWeight: FontWeight.w700)),
@@ -142,7 +142,7 @@ class _AdminOrdersPageState extends State<AdminOrdersPage> {
                         Expanded(child: Text(i['productName'] as String? ?? '')),
                         Text('x${i['quantity']}'),
                         const SizedBox(width: 12),
-                        Text('€${(i['price'] as num? ?? 0).toStringAsFixed(2)}'),
+                        Text('${(i['price'] as num? ?? 0).toStringAsFixed(2)} kr'),
                       ],
                     ),
                   );
@@ -298,7 +298,7 @@ class _AdminOrdersPageState extends State<AdminOrdersPage> {
                   ),
                 ),
                 DataCell(Text(o['customerName'] as String? ?? '—')),
-                DataCell(Text('€${(o['totalAmount'] as num? ?? 0).toStringAsFixed(2)}')),
+                DataCell(Text('${(o['totalAmount'] as num? ?? 0).toStringAsFixed(2)} kr')),
                 DataCell(
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

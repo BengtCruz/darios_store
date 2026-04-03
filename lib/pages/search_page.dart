@@ -211,7 +211,7 @@ class _SearchResultTile extends StatelessWidget {
               ),
             ),
             Text(
-              '€${product.price.toStringAsFixed(2)}',
+              '${product.price.toStringAsFixed(2)} kr',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),

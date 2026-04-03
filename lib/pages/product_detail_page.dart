@@ -154,7 +154,7 @@ class ProductDetailPage extends StatelessWidget {
         Row(
           children: [
             Text(
-              '€${product.price.toStringAsFixed(2)}',
+              '${product.price.toStringAsFixed(2)} kr',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const Spacer(),

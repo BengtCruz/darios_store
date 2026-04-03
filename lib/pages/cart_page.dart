@@ -108,7 +108,7 @@ class CartPage extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '€${item.product.price.toStringAsFixed(2)}',
+                '${item.product.price.toStringAsFixed(2)} kr',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 12),
@@ -139,7 +139,7 @@ class CartPage extends StatelessWidget {
         ),
         // Line total
         Text(
-          '€${item.total.toStringAsFixed(2)}',
+          '${item.total.toStringAsFixed(2)} kr',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w700,
               ),
@@ -180,7 +180,7 @@ class CartPage extends StatelessWidget {
                     ),
               ),
               Text(
-                '€${total.toStringAsFixed(2)}',
+                '${total.toStringAsFixed(2)} kr',
                 style: GoogleFonts.playfairDisplay(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,

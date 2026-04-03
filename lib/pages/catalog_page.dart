@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
+import '../providers/provider_scope.dart';
 import '../services/api_client.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
@@ -238,6 +239,28 @@ class _CatalogProductCard extends StatelessWidget {
                     ),
               ),
               const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  CartProviderScope.of(context).addToCart(product);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        S.of(context).detailAddedToCart(product.name),
+                        style: const TextStyle(color: AppTheme.bianco),
+                      ),
+                      backgroundColor: AppTheme.nero,
+                      behavior: SnackBarBehavior.floating,
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.add_shopping_cart,
+                  size: 18,
+                  color: AppTheme.grigio,
+                ),
+              ),
+              const SizedBox(width: 8),
               Row(
                 children: [
                   const Icon(Icons.star, size: 14, color: AppTheme.nero),

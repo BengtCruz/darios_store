@@ -251,6 +251,24 @@ class S {
   String get authPasswordsNoMatch => 'Passwords do not match';
   String get authLoginFailed => 'Invalid email or password';
   String get authRegisterFailed => 'Registration failed';
+
+  // --- Checkout ---
+  String get checkoutTitle => 'CHECKOUT';
+  String get checkoutName => 'Full Name';
+  String get checkoutEmail => 'Email Address';
+  String get checkoutNameRequired => 'Please enter your name';
+  String get checkoutEmailRequired => 'Please enter your email';
+  String get checkoutEmailInvalid => 'Please enter a valid email';
+  String get checkoutOrderSummary => 'ORDER SUMMARY';
+  String checkoutItemLine(String name, int qty) => '$name x$qty';
+  String get checkoutPlaceOrder => 'PLACE ORDER';
+  String get checkoutProcessing => 'PROCESSING...';
+  String get checkoutSuccessTitle => 'Order Placed!';
+  String get checkoutSuccessMessage => 'Thank you for your order. You will receive a confirmation email shortly.';
+  String get checkoutContinueShopping => 'CONTINUE SHOPPING';
+  String get checkoutFailed => 'Failed to place order. Please try again.';
+  String get checkoutStripeNotice => 'You will be redirected to Stripe to complete payment securely.';
+  String get checkoutPaymentSecure => 'Payments secured by Stripe';
 }
 
 class _Sv extends S {
@@ -481,6 +499,24 @@ class _Sv extends S {
   @override String get authPasswordsNoMatch => 'Lösenorden matchar inte';
   @override String get authLoginFailed => 'Ogiltig e-post eller lösenord';
   @override String get authRegisterFailed => 'Registreringen misslyckades';
+
+  // --- Checkout ---
+  @override String get checkoutTitle => 'KASSA';
+  @override String get checkoutName => 'Fullständigt namn';
+  @override String get checkoutEmail => 'E-postadress';
+  @override String get checkoutNameRequired => 'Ange ditt namn';
+  @override String get checkoutEmailRequired => 'Ange din e-post';
+  @override String get checkoutEmailInvalid => 'Ange en giltig e-postadress';
+  @override String get checkoutOrderSummary => 'ORDERÖVERSIKT';
+  @override String checkoutItemLine(String name, int qty) => '$name x$qty';
+  @override String get checkoutPlaceOrder => 'LÄGG BESTÄLLNING';
+  @override String get checkoutProcessing => 'BEARBETAR...';
+  @override String get checkoutSuccessTitle => 'Beställning lagd!';
+  @override String get checkoutSuccessMessage => 'Tack för din beställning. Du kommer att få ett bekräftelsemail inom kort.';
+  @override String get checkoutContinueShopping => 'FORTSÄTT HANDLA';
+  @override String get checkoutFailed => 'Beställningen misslyckades. Försök igen.';
+  @override String get checkoutStripeNotice => 'Du omdirigeras till Stripe för säker betalning.';
+  @override String get checkoutPaymentSecure => 'Betalningar säkrade av Stripe';
 }
 
 class AppLocaleProvider extends InheritedNotifier<AppLocale> {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
+import '../main.dart';
 import '../models/cart_item.dart';
 import '../providers/provider_scope.dart';
 import '../theme/app_theme.dart';
+import 'checkout_page.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -67,7 +69,7 @@ class CartPage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () => MainNavigator.of(context).onNavigate(1),
               child: Text(S.of(context).cartDiscover),
             ),
           ],
@@ -198,7 +200,13 @@ class CartPage extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const CheckoutPage(),
+                  ),
+                );
+              },
               child: Text(S.of(context).cartCheckout),
             ),
           ),

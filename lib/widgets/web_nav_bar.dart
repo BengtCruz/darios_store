@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
+import '../providers/provider_scope.dart';
 import '../theme/app_theme.dart';
 
 class WebNavBar extends StatelessWidget implements PreferredSizeWidget {
@@ -79,8 +80,7 @@ class WebNavBar extends StatelessWidget implements PreferredSizeWidget {
                   tooltip: S.of(context).navSearchLabel,
                 ),
                 const SizedBox(width: 8),
-                _NavIconButton(
-                  icon: Icons.shopping_bag_outlined,
+                _CartNavIcon(
                   isActive: currentIndex == 3,
                   onTap: () => onTap(3),
                   tooltip: S.of(context).navCartLabel,
@@ -201,6 +201,61 @@ class _NavIconButtonState extends State<_NavIconButton> {
               widget.icon,
               size: 22,
               color: widget.isActive ? AppTheme.nero : AppTheme.grigio,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CartNavIcon extends StatefulWidget {
+  final bool isActive;
+  final VoidCallback onTap;
+  final String tooltip;
+
+  const _CartNavIcon({
+    required this.isActive,
+    required this.onTap,
+    required this.tooltip,
+  });
+
+  @override
+  State<_CartNavIcon> createState() => _CartNavIconState();
+}
+
+class _CartNavIconState extends State<_CartNavIcon> {
+  bool _hovering = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final count = CartProviderScope.of(context).itemCount;
+    return Tooltip(
+      message: widget.tooltip,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) => setState(() => _hovering = true),
+        onExit: (_) => setState(() => _hovering = false),
+        child: GestureDetector(
+          onTap: widget.onTap,
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: _hovering
+                  ? AppTheme.grigioChiaro.withValues(alpha: 0.5)
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+            ),
+            child: Badge(
+              isLabelVisible: count > 0,
+              label: Text('$count'),
+              backgroundColor: AppTheme.nero,
+              child: Icon(
+                Icons.shopping_bag_outlined,
+                size: 22,
+                color: widget.isActive ? AppTheme.nero : AppTheme.grigio,
+              ),
             ),
           ),
         ),

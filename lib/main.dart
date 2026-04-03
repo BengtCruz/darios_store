@@ -60,13 +60,19 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
 
-  static const _pages = <Widget>[
-    HomePage(),
-    CatalogPage(),
-    SearchPage(),
-    CartPage(),
-    ProfilePage(),
-  ];
+  final _pages = <Widget>[];
+
+  @override
+  void initState() {
+    super.initState();
+    _pages.addAll([
+      const HomePage(),
+      const CatalogPage(),
+      const SearchPage(),
+      const CartPage(),
+      const ProfilePage(),
+    ]);
+  }
 
   void _onNavigate(int index) => setState(() => _currentIndex = index);
 
@@ -88,7 +94,12 @@ class _MainShellState extends State<MainShell> {
             currentIndex: _currentIndex,
             onTap: _onNavigate,
           ),
-          Expanded(child: _pages[_currentIndex]),
+          Expanded(
+            child: MainNavigator(
+              onNavigate: _onNavigate,
+              child: _pages[_currentIndex],
+            ),
+          ),
         ],
       ),
     );
@@ -96,6 +107,8 @@ class _MainShellState extends State<MainShell> {
 
   Widget _buildMobileLayout() {
     final s = S.of(context);
+    final cart = CartProviderScope.of(context);
+    final cartCount = cart.itemCount;
     final titles = [
       s.brandName,
       s.navCatalog,
@@ -120,12 +133,21 @@ class _MainShellState extends State<MainShell> {
               onPressed: () => _onNavigate(2),
             ),
           IconButton(
-            icon: const Icon(Icons.shopping_bag_outlined),
+            icon: Badge(
+              isLabelVisible: cartCount > 0,
+              label: Text('$cartCount'),
+              backgroundColor: AppTheme.nero,
+              textColor: AppTheme.bianco,
+              child: const Icon(Icons.shopping_bag_outlined),
+            ),
             onPressed: () => _onNavigate(3),
           ),
         ],
       ),
-      body: _pages[_currentIndex],
+      body: MainNavigator(
+        onNavigate: _onNavigate,
+        child: _pages[_currentIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onNavigate,
@@ -146,8 +168,18 @@ class _MainShellState extends State<MainShell> {
             label: s.navSearchLabel,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.shopping_bag_outlined),
-            activeIcon: const Icon(Icons.shopping_bag),
+            icon: Badge(
+              isLabelVisible: cartCount > 0,
+              label: Text('$cartCount'),
+              backgroundColor: AppTheme.nero,
+              child: const Icon(Icons.shopping_bag_outlined),
+            ),
+            activeIcon: Badge(
+              isLabelVisible: cartCount > 0,
+              label: Text('$cartCount'),
+              backgroundColor: AppTheme.nero,
+              child: const Icon(Icons.shopping_bag),
+            ),
             label: s.navCartLabel,
           ),
           BottomNavigationBarItem(
@@ -159,4 +191,21 @@ class _MainShellState extends State<MainShell> {
       ),
     );
   }
+}
+
+class MainNavigator extends InheritedWidget {
+  final ValueChanged<int> onNavigate;
+
+  const MainNavigator({
+    super.key,
+    required this.onNavigate,
+    required super.child,
+  });
+
+  static MainNavigator of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MainNavigator>()!;
+  }
+
+  @override
+  bool updateShouldNotify(MainNavigator oldWidget) => false;
 }

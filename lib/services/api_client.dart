@@ -142,6 +142,26 @@ class ApiClient {
     await _client.delete(Uri.parse('$_baseUrl/api/orders/$id'), headers: _headers);
   }
 
+  // Orders
+  Future<Map<String, dynamic>> createOrder(Map<String, dynamic> data) async {
+    final response = await _client.post(
+      Uri.parse('$_baseUrl/api/orders'),
+      headers: _headers,
+      body: jsonEncode(data),
+    );
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  // Stripe Checkout
+  Future<Map<String, dynamic>> createCheckoutSession(Map<String, dynamic> data) async {
+    final response = await _client.post(
+      Uri.parse('$_baseUrl/api/checkout'),
+      headers: _headers,
+      body: jsonEncode(data),
+    );
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
   // Dashboard
   Future<Map<String, dynamic>> getDashboard() async {
     final response = await _client.get(Uri.parse('$_baseUrl/api/admin/dashboard'), headers: _headers);

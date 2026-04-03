@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
+import '../providers/provider_scope.dart';
 import '../services/api_client.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
@@ -330,11 +331,37 @@ class _ProductCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
-          Text(
-            '€${product.price.toStringAsFixed(2)}',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
+          Row(
+            children: [
+              Text(
+                '€${product.price.toStringAsFixed(2)}',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: () {
+                  CartProviderScope.of(context).addToCart(product);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        S.of(context).detailAddedToCart(product.name),
+                        style: const TextStyle(color: AppTheme.bianco),
+                      ),
+                      backgroundColor: AppTheme.nero,
+                      behavior: SnackBarBehavior.floating,
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.add_shopping_cart,
+                  size: 20,
+                  color: AppTheme.grigio,
                 ),
+              ),
+            ],
           ),
         ],
       ),

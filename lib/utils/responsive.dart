@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Responsive {
@@ -5,7 +6,7 @@ class Responsive {
   static const double maxContentWidth = 1200;
 
   static bool isWide(BuildContext context) =>
-      MediaQuery.sizeOf(context).width > mobileBreakpoint;
+      kIsWeb || MediaQuery.sizeOf(context).width > mobileBreakpoint;
 
   static int gridColumns(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;

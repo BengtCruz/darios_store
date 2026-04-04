@@ -202,6 +202,40 @@ class ApiClient {
     );
   }
 
+  // Addresses
+  Future<List<Map<String, dynamic>>> getAddresses() async {
+    final response = await _client.get(
+      Uri.parse('$_baseUrl/api/addresses'),
+      headers: _headers,
+    );
+    return (jsonDecode(response.body) as List).cast<Map<String, dynamic>>();
+  }
+
+  Future<Map<String, dynamic>> createAddress(Map<String, dynamic> data) async {
+    final response = await _client.post(
+      Uri.parse('$_baseUrl/api/addresses'),
+      headers: _headers,
+      body: jsonEncode(data),
+    );
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  Future<Map<String, dynamic>> updateAddress(String id, Map<String, dynamic> data) async {
+    final response = await _client.put(
+      Uri.parse('$_baseUrl/api/addresses/$id'),
+      headers: _headers,
+      body: jsonEncode(data),
+    );
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  Future<void> deleteAddress(String id) async {
+    await _client.delete(
+      Uri.parse('$_baseUrl/api/addresses/$id'),
+      headers: _headers,
+    );
+  }
+
   void dispose() {
     _client.close();
   }

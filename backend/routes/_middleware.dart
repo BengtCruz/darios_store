@@ -70,6 +70,7 @@ Handler middleware(Handler handler) {
         .use(provider<OrderRepository>((ctx) => OrderRepository(_db!)))
         .use(provider<UserRepository>((ctx) => UserRepository(_db!)))
         .use(provider<WishlistRepository>((ctx) => WishlistRepository(_db!)))
+        .use(provider<AddressRepository>((ctx) => AddressRepository(_db!)))
         .call(context);
 
     return response.copyWith(

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/provider_scope.dart';
 import '../theme/app_theme.dart';
-import 'admin/admin_shell.dart';
-import 'login_page.dart';
-import 'register_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -81,10 +79,7 @@ class ProfilePage extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const LoginPage()),
-                  );
+                  context.push('/login');
                 },
                 child: Text(S.of(context).profileSignIn),
               ),
@@ -94,10 +89,7 @@ class ProfilePage extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const RegisterPage()),
-                  );
+                  context.push('/register');
                 },
                 child: Text(S.of(context).profileCreateAccount),
               ),
@@ -126,10 +118,7 @@ class ProfilePage extends StatelessWidget {
           if (auth.isAdmin) ...[
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const AdminShell()),
-              );
+              context.push('/admin');
             },
             child: Container(
               width: double.infinity,

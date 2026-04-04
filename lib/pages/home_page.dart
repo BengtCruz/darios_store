@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/provider_scope.dart';
@@ -6,7 +7,6 @@ import '../services/api_client.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
 import '../widgets/web_footer.dart';
-import 'product_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -302,11 +302,7 @@ class _ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => ProductDetailPage(product: product),
-          ),
-        );
+        context.push('/product/${product.id}', extra: product);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

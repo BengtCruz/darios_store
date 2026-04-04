@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../services/api_client.dart';
 import '../theme/app_theme.dart';
-import 'product_detail_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -168,11 +168,7 @@ class _SearchResultTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => ProductDetailPage(product: product),
-          ),
-        );
+        context.push('/product/${product.id}', extra: product);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),

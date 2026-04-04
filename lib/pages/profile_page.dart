@@ -101,6 +101,7 @@ class ProfilePage extends StatelessWidget {
           // Language switcher
           _buildLanguageSwitcher(context),
 
+          if (auth.isLoggedIn) ...[
           const Divider(height: 32),
 
           // Menu items
@@ -111,6 +112,7 @@ class ProfilePage extends StatelessWidget {
           _buildMenuItem(context, Icons.notifications_outlined, S.of(context).profileNotifications),
           _buildMenuItem(context, Icons.help_outline, S.of(context).profileSupport),
           _buildMenuItem(context, Icons.info_outline, S.of(context).profileAbout),
+          ],
 
           const Divider(height: 32),
 

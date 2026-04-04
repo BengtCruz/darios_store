@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/provider_scope.dart';
 import '../theme/app_theme.dart';
@@ -18,6 +19,9 @@ class WebNavBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final compact = width < 900;
+
     return Container(
       height: 72,
       decoration: const BoxDecoration(
@@ -42,33 +46,46 @@ class WebNavBar extends StatelessWidget implements PreferredSizeWidget {
                       children: [
                         const Icon(Icons.storefront, size: 24, color: AppTheme.nero),
                         const SizedBox(width: 12),
-                        Text(
-                          "DARIO'S STORE",
-                          style: TextStyle(
-                            fontFamily: 'Playfair Display',
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.nero,
-                            letterSpacing: 2,
+                        if (!compact)
+                          Text(
+                            "DARIO'S STORE",
+                            style: TextStyle(
+                              fontFamily: 'Playfair Display',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.nero,
+                              letterSpacing: 2,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 48),
 
-                // Nav links
-                _NavLink(
-                  label: S.of(context).navHome.toUpperCase(),
-                  isActive: currentIndex == 0,
-                  onTap: () => onTap(0),
-                ),
-                _NavLink(
-                  label: S.of(context).navCatalog,
-                  isActive: currentIndex == 1,
-                  onTap: () => onTap(1),
-                ),
+                if (!compact) ...[
+                  const SizedBox(width: 48),
+                  // Nav links (full-size)
+                  _NavLink(
+                    label: S.of(context).navHome.toUpperCase(),
+                    isActive: currentIndex == 0,
+                    onTap: () => onTap(0),
+                  ),
+                  _NavLink(
+                    label: S.of(context).navCatalog,
+                    isActive: currentIndex == 1,
+                    onTap: () => onTap(1),
+                  ),
+                  _NavLink(
+                    label: S.of(context).navSupport,
+                    isActive: GoRouterState.of(context).uri.path == '/support',
+                    onTap: () => context.push('/support'),
+                  ),
+                  _NavLink(
+                    label: S.of(context).navAbout,
+                    isActive: GoRouterState.of(context).uri.path == '/about',
+                    onTap: () => context.push('/about'),
+                  ),
+                ],
 
                 const Spacer(),
 
@@ -92,6 +109,50 @@ class WebNavBar extends StatelessWidget implements PreferredSizeWidget {
                   onTap: () => onTap(4),
                   tooltip: S.of(context).navProfileLabel,
                 ),
+
+                // Hamburger menu (compact mode)
+                if (compact) ...[
+                  const SizedBox(width: 8),
+                  PopupMenuButton<String>(
+                    icon: const Icon(Icons.menu, color: AppTheme.nero),
+                    tooltip: 'Menu',
+                    offset: const Offset(0, 56),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    color: AppTheme.bianco,
+                    onSelected: (value) {
+                      switch (value) {
+                        case 'home':
+                          onTap(0);
+                        case 'catalog':
+                          onTap(1);
+                        case 'support':
+                          context.push('/support');
+                        case 'about':
+                          context.push('/about');
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        value: 'home',
+                        child: Text(S.of(context).navHome),
+                      ),
+                      PopupMenuItem(
+                        value: 'catalog',
+                        child: Text(S.of(context).navCatalog),
+                      ),
+                      PopupMenuItem(
+                        value: 'support',
+                        child: Text(S.of(context).profileSupport),
+                      ),
+                      PopupMenuItem(
+                        value: 'about',
+                        child: Text(S.of(context).profileAbout),
+                      ),
+                    ],
+                  ),
+                ],
               ],
             ),
           ),

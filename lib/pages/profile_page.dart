@@ -110,8 +110,6 @@ class ProfilePage extends StatelessWidget {
           _buildMenuItem(context, Icons.location_on_outlined, S.of(context).profileAddresses, onTap: () => context.push('/addresses')),
           _buildMenuItem(context, Icons.payment_outlined, S.of(context).profilePaymentMethods, onTap: () => context.push('/payment-methods')),
           _buildMenuItem(context, Icons.notifications_outlined, S.of(context).profileNotifications),
-          _buildMenuItem(context, Icons.help_outline, S.of(context).profileSupport),
-          _buildMenuItem(context, Icons.info_outline, S.of(context).profileAbout),
           ],
 
           const Divider(height: 32),

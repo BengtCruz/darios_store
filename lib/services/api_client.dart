@@ -169,6 +169,39 @@ class ApiClient {
     return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
+  // Wishlist
+  Future<List<Map<String, dynamic>>> getWishlist() async {
+    final response = await _client.get(
+      Uri.parse('$_baseUrl/api/wishlist'),
+      headers: _headers,
+    );
+    return (jsonDecode(response.body) as List).cast<Map<String, dynamic>>();
+  }
+
+  Future<List<String>> getWishlistIds() async {
+    final response = await _client.get(
+      Uri.parse('$_baseUrl/api/wishlist/ids'),
+      headers: _headers,
+    );
+    return (jsonDecode(response.body) as List).cast<String>();
+  }
+
+  Future<void> addToWishlist(String productId) async {
+    await _client.post(
+      Uri.parse('$_baseUrl/api/wishlist'),
+      headers: _headers,
+      body: jsonEncode({'productId': productId}),
+    );
+  }
+
+  Future<void> removeFromWishlist(String productId) async {
+    await _client.delete(
+      Uri.parse('$_baseUrl/api/wishlist'),
+      headers: _headers,
+      body: jsonEncode({'productId': productId}),
+    );
+  }
+
   void dispose() {
     _client.close();
   }

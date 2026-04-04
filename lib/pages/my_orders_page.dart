@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../l10n/app_localizations.dart';
 import '../models/order.dart';
 import '../providers/provider_scope.dart';
-import '../services/api_client.dart';
+import '../main.dart' show apiClient;
 import '../theme/app_theme.dart';
 
 class MyOrdersPage extends StatefulWidget {
@@ -34,7 +34,7 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
 
     try {
       final auth = AuthProviderScope.of(context);
-      final api = ApiClient();
+      final api = apiClient;
       if (auth.token != null) api.setToken(auth.token!);
 
       final json = await api.getOrders(

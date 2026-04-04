@@ -218,6 +218,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const Spacer(),
+            if (AuthProviderScope.of(context).isLoggedIn) ...[
+              Builder(builder: (context) {
+                final wishlist = WishlistProviderScope.of(context);
+                final isWishlisted = wishlist.isWishlisted(product.id);
+                return GestureDetector(
+                  onTap: () => wishlist.toggle(product.id),
+                  child: Icon(
+                    isWishlisted ? Icons.favorite : Icons.favorite_border,
+                    size: 24,
+                    color: isWishlisted ? Colors.red : AppTheme.grigio,
+                  ),
+                );
+              }),
+              const SizedBox(width: 16),
+            ],
             const Icon(Icons.star, size: 18, color: AppTheme.nero),
             const SizedBox(width: 4),
             Text(

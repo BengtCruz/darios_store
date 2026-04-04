@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
+import '../providers/provider_scope.dart';
 import '../services/api_client.dart';
 import '../theme/app_theme.dart';
 
@@ -212,6 +213,21 @@ class _SearchResultTile extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
             ),
+            if (AuthProviderScope.of(context).isLoggedIn) ...[
+              const SizedBox(width: 12),
+              Builder(builder: (context) {
+                final wishlist = WishlistProviderScope.of(context);
+                final isWishlisted = wishlist.isWishlisted(product.id);
+                return GestureDetector(
+                  onTap: () => wishlist.toggle(product.id),
+                  child: Icon(
+                    isWishlisted ? Icons.favorite : Icons.favorite_border,
+                    size: 20,
+                    color: isWishlisted ? Colors.red : AppTheme.grigio,
+                  ),
+                );
+              }),
+            ],
           ],
         ),
       ),

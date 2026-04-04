@@ -300,6 +300,10 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final wishlist = WishlistProviderScope.of(context);
+    final auth = AuthProviderScope.of(context);
+    final isWishlisted = wishlist.isWishlisted(product.id);
+
     return GestureDetector(
       onTap: () {
         context.push('/product/${product.id}', extra: product);
@@ -311,12 +315,38 @@ class _ProductCard extends StatelessWidget {
             child: Container(
               width: double.infinity,
               color: AppTheme.grigioChiaro.withValues(alpha: 0.3),
-              child: Image.network(
-                product.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const Center(
-                  child: Icon(Icons.image_outlined, size: 48, color: AppTheme.grigio),
-                ),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const Center(
+                        child: Icon(Icons.image_outlined, size: 48, color: AppTheme.grigio),
+                      ),
+                    ),
+                  ),
+                  if (auth.isLoggedIn)
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: GestureDetector(
+                        onTap: () => wishlist.toggle(product.id),
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: AppTheme.bianco.withValues(alpha: 0.9),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            isWishlisted ? Icons.favorite : Icons.favorite_border,
+                            size: 18,
+                            color: isWishlisted ? Colors.red : AppTheme.nero,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/provider_scope.dart';
 import '../theme/app_theme.dart';
-import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (error != null) {
       setState(() => _error = error);
     } else {
-      Navigator.of(context).pop();
+      context.pop();
     }
   }
 
@@ -173,9 +173,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       const SizedBox(width: 4),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (_) => const LoginPage()),
-                          );
+                          context.pushReplacement('/login');
                         },
                         child: Text(
                           s.authSignInLink,

@@ -1,24 +1,84 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/provider_scope.dart';
+import '../services/api_client.dart';
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
 
-class ProductDetailPage extends StatelessWidget {
-  final Product product;
+class ProductDetailPage extends StatefulWidget {
+  final String productId;
+  final Product? product;
 
-  const ProductDetailPage({super.key, required this.product});
+  const ProductDetailPage({super.key, required this.productId, this.product});
+
+  @override
+  State<ProductDetailPage> createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  Product? _product;
+  bool _loading = false;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _product = widget.product;
+    if (_product == null) {
+      _loadProduct();
+    }
+  }
+
+  Future<void> _loadProduct() async {
+    setState(() => _loading = true);
+    try {
+      final api = ApiClient();
+      final json = await api.getProduct(widget.productId);
+      if (!mounted) return;
+      setState(() {
+        _product = Product.fromJson(json);
+        _loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _error = e.toString();
+        _loading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final isWide = Responsive.isWide(context);
+
+    if (_loading) {
+      return Scaffold(
+        appBar: isWide ? null : AppBar(title: Text(S.of(context).brandName)),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (_error != null || _product == null) {
+      return Scaffold(
+        appBar: isWide ? null : AppBar(title: Text(S.of(context).brandName)),
+        body: Center(child: Text(_error ?? 'Product not found')),
+      );
+    }
+
+    final product = _product!;
 
     return Scaffold(
       appBar: isWide
           ? null
           : AppBar(
               title: Text(S.of(context).brandName),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => context.pop(),
+              ),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.share_outlined),
@@ -31,15 +91,15 @@ class ProductDetailPage extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1200),
             child: isWide
-                ? _buildWebLayout(context)
-                : _buildMobileLayout(context),
+                ? _buildWebLayout(context, product)
+                : _buildMobileLayout(context, product),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildWebLayout(BuildContext context) {
+  Widget _buildWebLayout(BuildContext context, Product product) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
       child: Column(
@@ -49,7 +109,7 @@ class ProductDetailPage extends StatelessWidget {
           MouseRegion(
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
+              onTap: () => context.pop(),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -89,7 +149,7 @@ class ProductDetailPage extends StatelessWidget {
               const SizedBox(width: 48),
               // Details (right)
               Expanded(
-                child: _buildProductInfo(context),
+                child: _buildProductInfo(context, product),
               ),
             ],
           ),
@@ -98,7 +158,7 @@ class ProductDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMobileLayout(BuildContext context) {
+  Widget _buildMobileLayout(BuildContext context, Product product) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -118,13 +178,13 @@ class ProductDetailPage extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(20),
-          child: _buildProductInfo(context),
+          child: _buildProductInfo(context, product),
         ),
       ],
     );
   }
 
-  Widget _buildProductInfo(BuildContext context) {
+  Widget _buildProductInfo(BuildContext context, Product product) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

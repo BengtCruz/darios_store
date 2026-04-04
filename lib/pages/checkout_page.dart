@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../providers/provider_scope.dart';
@@ -70,7 +70,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       if (url != null) {
         cart.clearCart();
         await launchUrl(Uri.parse(url), mode: LaunchMode.inAppBrowserView);
-        if (mounted) Navigator.of(context).pop();
+        if (mounted) context.pop();
       } else {
         throw Exception(result['error'] ?? 'No checkout URL returned');
       }

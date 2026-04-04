@@ -69,6 +69,7 @@ Handler middleware(Handler handler) {
         .use(provider<CategoryRepository>((ctx) => CategoryRepository(_db!)))
         .use(provider<OrderRepository>((ctx) => OrderRepository(_db!)))
         .use(provider<UserRepository>((ctx) => UserRepository(_db!)))
+        .use(provider<WishlistRepository>((ctx) => WishlistRepository(_db!)))
         .call(context);
 
     return response.copyWith(

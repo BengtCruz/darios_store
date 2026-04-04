@@ -3,22 +3,20 @@ import 'package:go_router/go_router.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
 import '../providers/provider_scope.dart';
-import '../services/api_client.dart';
+import '../main.dart' show apiClient;
 import '../theme/app_theme.dart';
 import '../utils/responsive.dart';
 
-class CatalogPage extends StatefulWidget {
-  const CatalogPage({super.key});
+class WishlistPage extends StatefulWidget {
+  const WishlistPage({super.key});
 
   @override
-  State<CatalogPage> createState() => _CatalogPageState();
+  State<WishlistPage> createState() => _WishlistPageState();
 }
 
-class _CatalogPageState extends State<CatalogPage> {
-  final _api = ApiClient();
+class _WishlistPageState extends State<WishlistPage> {
+  final _api = apiClient;
   List<Product> _products = [];
-  List<String> _categories = [];
-  String? _selectedCategory;
   bool _loading = true;
 
   @override
@@ -29,18 +27,10 @@ class _CatalogPageState extends State<CatalogPage> {
 
   Future<void> _load() async {
     try {
-      final results = await Future.wait([
-        _api.getProducts(),
-        _api.getCategories(),
-      ]);
+      final data = await _api.getWishlist();
       if (!mounted) return;
       setState(() {
-        _products = results[0]
-            .map((j) => Product.fromJson(j))
-            .toList();
-        _categories = results[1]
-            .map((j) => j['name'] as String)
-            .toList();
+        _products = data.map((j) => Product.fromJson(j)).toList();
         _loading = false;
       });
     } catch (_) {
@@ -49,53 +39,77 @@ class _CatalogPageState extends State<CatalogPage> {
     }
   }
 
-  List<Product> get _filteredProducts {
-    if (_selectedCategory == null) return _products;
-    return _products
-        .where((p) => p.category == _selectedCategory)
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final isWide = Responsive.isWide(context);
-    final columns = Responsive.gridColumns(context);
-    final hPad = isWide ? 32.0 : 20.0;
     final s = S.of(context);
+    final isWide = Responsive.isWide(context);
 
-    if (_loading) {
-      return const Center(
-        child: CircularProgressIndicator(color: AppTheme.nero),
-      );
-    }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(s.brandName),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
+        ),
+      ),
+      body: _loading
+          ? const Center(child: CircularProgressIndicator(color: AppTheme.nero))
+          : _products.isEmpty
+              ? _buildEmptyState(context, s)
+              : _buildContent(context, s, isWide),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context, S s) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.favorite_border, size: 64, color: AppTheme.grigioChiaro),
+          const SizedBox(height: 16),
+          Text(
+            s.wishlistEmpty,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            s.wishlistEmptyDesc,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 24),
+          OutlinedButton(
+            onPressed: () => context.go('/catalog'),
+            child: Text(s.wishlistBrowse),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, S s, bool isWide) {
+    final columns = Responsive.gridColumns(context);
 
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 1200),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (isWide) const SizedBox(height: 24),
-            // Category filter
-            SizedBox(
-              height: 48,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: hPad),
-                children: [
-                  _buildFilterChip(s.catalogAll, null),
-                  ..._categories.map((c) => _buildFilterChip(c, c)),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            // Product count
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: hPad),
+              padding: EdgeInsets.symmetric(horizontal: isWide ? 32 : 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    s.productCount(_filteredProducts.length),
+                    s.wishlistTitle.toUpperCase(),
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          letterSpacing: 3,
+                        ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    '${_products.length} ${_products.length == 1 ? s.myOrdersItem : s.myOrdersItems}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           letterSpacing: 2,
                           fontSize: 12,
@@ -105,20 +119,26 @@ class _CatalogPageState extends State<CatalogPage> {
               ),
             ),
             const Divider(height: 24),
-            // Product grid
             Expanded(
               child: GridView.builder(
-                padding: EdgeInsets.symmetric(horizontal: hPad),
+                padding: EdgeInsets.symmetric(horizontal: isWide ? 32 : 20),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: columns,
                   childAspectRatio: 0.65,
                   mainAxisSpacing: 24,
                   crossAxisSpacing: 20,
                 ),
-                itemCount: _filteredProducts.length,
+                itemCount: _products.length,
                 itemBuilder: (context, index) {
-                  final product = _filteredProducts[index];
-                  return _CatalogProductCard(product: product);
+                  final product = _products[index];
+                  return _WishlistProductCard(
+                    product: product,
+                    onRemoved: () {
+                      setState(() {
+                        _products.removeAt(index);
+                      });
+                    },
+                  );
                 },
               ),
             ),
@@ -127,47 +147,16 @@ class _CatalogPageState extends State<CatalogPage> {
       ),
     );
   }
-
-  Widget _buildFilterChip(String label, String? categoryValue) {
-    final isSelected = _selectedCategory == categoryValue;
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: GestureDetector(
-        onTap: () => setState(() => _selectedCategory = categoryValue),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: isSelected ? AppTheme.nero : Colors.transparent,
-            border: Border.all(
-              color: isSelected ? AppTheme.nero : AppTheme.grigioChiaro,
-              width: 1.5,
-            ),
-          ),
-          child: Text(
-            label.toUpperCase(),
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontSize: 11,
-                  letterSpacing: 1.5,
-                  color: isSelected ? AppTheme.bianco : AppTheme.nero,
-                ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
-class _CatalogProductCard extends StatelessWidget {
+class _WishlistProductCard extends StatelessWidget {
   final Product product;
+  final VoidCallback onRemoved;
 
-  const _CatalogProductCard({required this.product});
+  const _WishlistProductCard({required this.product, required this.onRemoved});
 
   @override
   Widget build(BuildContext context) {
-    final wishlist = WishlistProviderScope.of(context);
-    final auth = AuthProviderScope.of(context);
-    final isWishlisted = wishlist.isWishlisted(product.id);
-
     return GestureDetector(
       onTap: () {
         context.push('/product/${product.id}', extra: product);
@@ -191,45 +180,28 @@ class _CatalogProductCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (product.isFeatured)
-                    Positioned(
-                      top: 8,
-                      left: 0,
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: GestureDetector(
+                      onTap: () {
+                        WishlistProviderScope.of(context).toggle(product.id);
+                        onRemoved();
+                      },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        color: AppTheme.nero,
-                        child: Text(
-                          S.of(context).catalogFeaturedBadge,
-                          style:
-                              Theme.of(context).textTheme.labelLarge?.copyWith(
-                                    fontSize: 9,
-                                    color: AppTheme.bianco,
-                                    letterSpacing: 1.5,
-                                  ),
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: AppTheme.bianco.withValues(alpha: 0.9),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.favorite,
+                          size: 18,
+                          color: Colors.red,
                         ),
                       ),
                     ),
-                  if (auth.isLoggedIn)
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: GestureDetector(
-                        onTap: () => wishlist.toggle(product.id),
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: AppTheme.bianco.withValues(alpha: 0.9),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            isWishlisted ? Icons.favorite : Icons.favorite_border,
-                            size: 18,
-                            color: isWishlisted ? Colors.red : AppTheme.nero,
-                          ),
-                        ),
-                      ),
-                    ),
+                  ),
                 ],
               ),
             ),

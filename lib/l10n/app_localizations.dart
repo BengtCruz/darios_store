@@ -216,6 +216,14 @@ class S {
   String get myOrdersItem => 'item';
   String get myOrdersItems => 'items';
 
+  // --- Wishlist ---
+  String get wishlistTitle => 'Wishlist';
+  String get wishlistEmpty => 'Your wishlist is empty';
+  String get wishlistEmptyDesc => 'Browse our products and save your\nfavorites by tapping the heart icon.';
+  String get wishlistBrowse => 'BROWSE PRODUCTS';
+  String wishlistAdded(String name) => '$name added to wishlist';
+  String wishlistRemoved(String name) => '$name removed from wishlist';
+
   // --- Admin Product Form ---
   String get formEditProduct => 'Edit Product';
   String get formNewProduct => 'New Product';
@@ -477,6 +485,14 @@ class _Sv extends S {
   @override String get myOrdersEmptyDesc => 'Din orderhistorik visas här\nnär du har gjort ett köp.';
   @override String get myOrdersItem => 'artikel';
   @override String get myOrdersItems => 'artiklar';
+
+  // --- Wishlist ---
+  @override String get wishlistTitle => 'Önskelista';
+  @override String get wishlistEmpty => 'Din önskelista är tom';
+  @override String get wishlistEmptyDesc => 'Utforska våra produkter och spara dina\nfavoriter genom att trycka på hjärtikonen.';
+  @override String get wishlistBrowse => 'UTFORSKA PRODUKTER';
+  @override String wishlistAdded(String name) => '$name tillagd i önskelistan';
+  @override String wishlistRemoved(String name) => '$name borttagen från önskelistan';
 
   // --- Admin Product Form ---
   @override String get formEditProduct => 'Redigera Produkt';

@@ -10,11 +10,21 @@ class OrderRepository {
   OrderRepository(this._db);
   final Database _db;
 
-  Future<List<Order>> findAll({String? status}) async {
+  Future<List<Order>> findAll({String? status, String? email}) async {
     final conn = await _db.connection;
-    final where = status != null ? 'WHERE o.status = @status' : '';
-    final params = status != null ? {'status': status} : <String, Object?>{};
+    final conditions = <String>[];
+    final params = <String, Object?>{};
 
+    if (status != null) {
+      conditions.add('o.status = @status');
+      params['status'] = status;
+    }
+    if (email != null) {
+      conditions.add('o.customer_email = @email');
+      params['email'] = email;
+    }
+
+    final where = conditions.isNotEmpty ? 'WHERE ${conditions.join(' AND ')}' : '';
     final result = await conn.execute(
       Sql.named('''
         SELECT o.*,

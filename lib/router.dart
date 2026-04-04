@@ -8,6 +8,7 @@ import 'pages/cart_page.dart';
 import 'pages/profile_page.dart';
 import 'pages/product_detail_page.dart';
 import 'pages/checkout_page.dart';
+import 'pages/my_orders_page.dart';
 import 'pages/login_page.dart';
 import 'pages/register_page.dart';
 import 'pages/admin/admin_shell.dart';
@@ -85,6 +86,11 @@ GoRouter buildRouter() {
       parentNavigatorKey: _rootNavigatorKey,
       path: '/checkout',
       builder: (context, state) => const CheckoutPage(),
+    ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      path: '/my-orders',
+      builder: (context, state) => const MyOrdersPage(),
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,

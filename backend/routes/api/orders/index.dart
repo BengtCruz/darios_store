@@ -20,7 +20,10 @@ Future<Response> onRequest(RequestContext context) async {
 Future<Response> _get(RequestContext context) async {
   final repo = context.read<OrderRepository>();
   final params = context.request.uri.queryParameters;
-  final orders = await repo.findAll(status: params['status']);
+  final orders = await repo.findAll(
+    status: params['status'],
+    email: params['email'],
+  );
   return Response.json(body: orders.map((o) => o.toJson()).toList());
 }
 

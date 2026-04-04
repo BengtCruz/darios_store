@@ -1,7 +1,6 @@
-import 'package:postgres/postgres.dart';
-
 import 'package:backend/db/database.dart';
 import 'package:backend/models/category.dart';
+import 'package:postgres/postgres.dart';
 
 class CategoryRepository {
 

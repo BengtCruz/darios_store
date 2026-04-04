@@ -236,6 +236,49 @@ class ApiClient {
     );
   }
 
+  // Payment Methods
+  Future<List<Map<String, dynamic>>> getPaymentMethods() async {
+    final response = await _client.get(
+      Uri.parse('$_baseUrl/api/payment-methods'),
+      headers: _headers,
+    );
+    return (jsonDecode(response.body) as List).cast<Map<String, dynamic>>();
+  }
+
+  /// Starts a Stripe Checkout setup session. Returns {url, sessionId}.
+  Future<Map<String, dynamic>> setupPaymentMethod() async {
+    final response = await _client.post(
+      Uri.parse('$_baseUrl/api/payment-methods/setup'),
+      headers: _headers,
+    );
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  /// Syncs payment methods from Stripe after the user returns.
+  Future<List<Map<String, dynamic>>> syncPaymentMethods() async {
+    final response = await _client.post(
+      Uri.parse('$_baseUrl/api/payment-methods/sync'),
+      headers: _headers,
+    );
+    return (jsonDecode(response.body) as List).cast<Map<String, dynamic>>();
+  }
+
+  Future<Map<String, dynamic>> updatePaymentMethod(String id, Map<String, dynamic> data) async {
+    final response = await _client.put(
+      Uri.parse('$_baseUrl/api/payment-methods/$id'),
+      headers: _headers,
+      body: jsonEncode(data),
+    );
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  Future<void> deletePaymentMethod(String id) async {
+    await _client.delete(
+      Uri.parse('$_baseUrl/api/payment-methods/$id'),
+      headers: _headers,
+    );
+  }
+
   void dispose() {
     _client.close();
   }

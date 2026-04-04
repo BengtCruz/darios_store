@@ -8,10 +8,9 @@ class Category {
   const Category({
     required this.id,
     required this.name,
-    this.description,
+    required this.createdAt, this.description,
     this.sortOrder = 0,
     this.isActive = true,
-    required this.createdAt,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) =>

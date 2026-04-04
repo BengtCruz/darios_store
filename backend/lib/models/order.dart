@@ -7,13 +7,9 @@ class Order {
 
   const Order({
     required this.id,
-    this.customerName,
+    required this.totalAmount, required this.items, required this.createdAt, required this.updatedAt, this.customerName,
     this.customerEmail,
     this.status = 'pending',
-    required this.totalAmount,
-    required this.items,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);

@@ -1,9 +1,8 @@
 import 'dart:io';
 
+import 'package:backend/repositories/user_repository.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dbcrypt/dbcrypt.dart';
-
-import 'package:backend/repositories/user_repository.dart';
 
 class AuthService {
 

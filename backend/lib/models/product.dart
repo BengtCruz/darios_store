@@ -12,12 +12,10 @@ class Product {
     required this.price,
     required this.imageUrl,
     required this.category,
-    this.rating = 0.0,
+    required this.createdAt, required this.updatedAt, this.rating = 0.0,
     this.isFeatured = false,
     this.isActive = true,
     this.stock = 0,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) =>

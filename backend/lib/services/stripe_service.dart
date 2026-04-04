@@ -103,4 +103,93 @@ class StripeService {
       return null;
     }
   }
+
+  /// Creates a Stripe Customer and returns the customer object.
+  static Future<Map<String, dynamic>> createCustomer({
+    required String email,
+    String? name,
+  }) async {
+    final body = <String, String>{
+      'email': email,
+    };
+    if (name != null && name.isNotEmpty) {
+      body['name'] = name;
+    }
+
+    final response = await http.post(
+      Uri.parse('$_apiBase/customers'),
+      headers: _headers,
+      body: body,
+    );
+
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Stripe error: ${json['error']?['message'] ?? response.body}',
+      );
+    }
+    return json;
+  }
+
+  /// Creates a Checkout Session in "setup" mode for saving a payment method.
+  static Future<Map<String, dynamic>> createSetupSession({
+    required String customerId,
+    required String successUrl,
+    required String cancelUrl,
+  }) async {
+    final body = <String, String>{
+      'mode': 'setup',
+      'customer': customerId,
+      'payment_method_types[0]': 'card',
+      'success_url': successUrl,
+      'cancel_url': cancelUrl,
+    };
+
+    final response = await http.post(
+      Uri.parse('$_apiBase/checkout/sessions'),
+      headers: _headers,
+      body: body,
+    );
+
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Stripe error: ${json['error']?['message'] ?? response.body}',
+      );
+    }
+    return json;
+  }
+
+  /// Lists payment methods attached to a Stripe customer.
+  static Future<List<Map<String, dynamic>>> listCustomerPaymentMethods(
+    String customerId,
+  ) async {
+    final uri = Uri.parse(
+      '$_apiBase/payment_methods?customer=$customerId&type=card&limit=20',
+    );
+    final response = await http.get(uri, headers: _headers);
+
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Stripe error: ${json['error']?['message'] ?? response.body}',
+      );
+    }
+    return (json['data'] as List).cast<Map<String, dynamic>>();
+  }
+
+  /// Detaches a payment method from its customer on Stripe.
+  static Future<void> detachPaymentMethod(String paymentMethodId) async {
+    final response = await http.post(
+      Uri.parse('$_apiBase/payment_methods/$paymentMethodId/detach'),
+      headers: _headers,
+    );
+
+    if (response.statusCode != 200) {
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      throw Exception(
+        'Stripe error: ${json['error']?['message'] ?? response.body}',
+      );
+    }
+  }
 }

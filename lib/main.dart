@@ -15,6 +15,9 @@ final cartProvider = CartProvider();
 final wishlistProvider = WishlistProvider(apiClient);
 
 void main() {
+  // Restore auth session from localStorage (survives page reloads)
+  authProvider.restoreSession();
+
   // Load wishlist when user logs in, clear when logging out
   authProvider.addListener(() {
     if (authProvider.isLoggedIn) {

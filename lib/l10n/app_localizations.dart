@@ -245,6 +245,22 @@ class S {
   String get addressDeleteConfirm => 'Delete Address';
   String addressDeleteMessage(String label) => 'Remove your "$label" address?';
 
+  // --- Payment Methods ---
+  String get paymentTitle => 'My Payment Methods';
+  String get paymentEmpty => 'No payment methods saved';
+  String get paymentEmptyDesc => 'Add a card securely via Stripe\nfor faster checkout.';
+  String get paymentAdd => 'ADD PAYMENT METHOD';
+  String get paymentLabel => 'Label';
+  String get paymentEditLabel => 'Rename Card';
+  String get paymentExpires => 'Expires';
+  String get paymentDefault => 'Default';
+  String get paymentSetDefault => 'Set as default';
+  String get paymentSetAsDefault => 'Set as default payment method';
+  String get paymentDeleteConfirm => 'Delete Payment Method';
+  String paymentDeleteMessage(String label) => 'Remove your "$label" payment method?\nThe card will also be detached from Stripe.';
+  String get paymentStripeSecure => 'Cards secured by Stripe';
+  String get paymentSetupFailed => 'Failed to open card setup. Please try again.';
+
   // --- Admin Product Form ---
   String get formEditProduct => 'Edit Product';
   String get formNewProduct => 'New Product';
@@ -535,6 +551,22 @@ class _Sv extends S {
   @override String get addressSetAsDefault => 'Ange som standardadress';
   @override String get addressDeleteConfirm => 'Ta bort adress';
   @override String addressDeleteMessage(String label) => 'Ta bort din "$label"-adress?';
+
+  // --- Payment Methods ---
+  @override String get paymentTitle => 'Mina betalningsmetoder';
+  @override String get paymentEmpty => 'Inga betalningsmetoder sparade';
+  @override String get paymentEmptyDesc => 'Lägg till ett kort säkert via Stripe\nför snabbare betalning.';
+  @override String get paymentAdd => 'LÄGG TILL BETALNINGSMETOD';
+  @override String get paymentLabel => 'Etikett';
+  @override String get paymentEditLabel => 'Byt namn på kort';
+  @override String get paymentExpires => 'Utgår';
+  @override String get paymentDefault => 'Standard';
+  @override String get paymentSetDefault => 'Ange som standard';
+  @override String get paymentSetAsDefault => 'Ange som standardbetalningsmetod';
+  @override String get paymentDeleteConfirm => 'Ta bort betalningsmetod';
+  @override String paymentDeleteMessage(String label) => 'Ta bort din "$label"-betalningsmetod?\nKortet kopplas också bort från Stripe.';
+  @override String get paymentStripeSecure => 'Kort säkrade av Stripe';
+  @override String get paymentSetupFailed => 'Kunde inte öppna kortregistrering. Försök igen.';
 
   // --- Admin Product Form ---
   @override String get formEditProduct => 'Redigera Produkt';

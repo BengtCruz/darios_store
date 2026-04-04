@@ -30,7 +30,7 @@ Future<Response> onRequest(RequestContext context) async {
   // Create order in DB with status 'pending'
   final repo = context.read<OrderRepository>();
   final orderItems =
-      items.map((i) => OrderItem.fromJson(i)).toList();
+      items.map(OrderItem.fromJson).toList();
   final totalAmount = orderItems.fold<double>(
     0,
     (sum, item) => sum + item.price * item.quantity,

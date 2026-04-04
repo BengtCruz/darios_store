@@ -1,6 +1,5 @@
-import 'package:postgres/postgres.dart';
-
 import 'package:backend/db/database.dart';
+import 'package:postgres/postgres.dart';
 
 class Migrator {
 
@@ -193,6 +192,30 @@ const _migrations = <_Migration>[
       created_at TIMESTAMPTZ DEFAULT NOW(),
       updated_at TIMESTAMPTZ DEFAULT NOW()
     )
+    ''',
+  ),
+  _Migration(
+    '012_create_payment_methods',
+    '''
+    CREATE TABLE payment_methods (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      stripe_payment_method_id TEXT NOT NULL UNIQUE,
+      label TEXT NOT NULL DEFAULT 'My Card',
+      card_brand TEXT NOT NULL,
+      last_four TEXT NOT NULL,
+      expiry_month INTEGER NOT NULL,
+      expiry_year INTEGER NOT NULL,
+      is_default BOOLEAN DEFAULT false,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+    ''',
+  ),
+  _Migration(
+    '013_add_stripe_customer_id_to_users',
+    '''
+    ALTER TABLE users ADD COLUMN stripe_customer_id TEXT
     ''',
   ),
 ];

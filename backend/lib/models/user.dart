@@ -10,9 +10,8 @@ class User {
     required this.email,
     required this.name,
     required this.passwordHash,
-    this.role = 'customer',
+    required this.createdAt, this.role = 'customer',
     this.isActive = true,
-    required this.createdAt,
     this.updatedAt,
   });
 

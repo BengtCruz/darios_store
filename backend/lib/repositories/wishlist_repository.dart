@@ -1,6 +1,5 @@
-import 'package:postgres/postgres.dart';
-
 import 'package:backend/db/database.dart';
+import 'package:postgres/postgres.dart';
 
 class WishlistRepository {
   WishlistRepository(this._db);

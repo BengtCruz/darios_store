@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../services/api_client.dart';
+import '../utils/web_helper.dart' as web;
 
 class AuthProvider extends ChangeNotifier {
   final ApiClient _api;
@@ -23,7 +25,29 @@ class AuthProvider extends ChangeNotifier {
     _token = token;
     _user = user;
     _api.setToken(token);
+    // Persist to localStorage for surviving page reloads (e.g. Stripe redirect)
+    web.saveToStorage('auth_token', token);
+    web.saveToStorage('auth_user', jsonEncode(user));
     notifyListeners();
+  }
+
+  /// Restore session from localStorage (called on app startup).
+  void restoreSession() {
+    final token = web.readFromStorage('auth_token');
+    final userJson = web.readFromStorage('auth_user');
+    if (token != null && userJson != null) {
+      try {
+        final user = jsonDecode(userJson) as Map<String, dynamic>;
+        _token = token;
+        _user = user;
+        _api.setToken(token);
+        notifyListeners();
+      } catch (_) {
+        // Corrupted data, clear it
+        web.removeFromStorage('auth_token');
+        web.removeFromStorage('auth_user');
+      }
+    }
   }
 
   Future<String?> register({
@@ -101,6 +125,8 @@ class AuthProvider extends ChangeNotifier {
     _token = null;
     _user = null;
     _api.setToken(null);
+    web.removeFromStorage('auth_token');
+    web.removeFromStorage('auth_user');
     notifyListeners();
   }
 }

@@ -34,11 +34,8 @@ class AddressRepository {
     required String label,
     required String fullName,
     required String street,
-    String? street2,
-    required String city,
+    required String city, required String postalCode, required String country, String? street2,
     String? state,
-    required String postalCode,
-    required String country,
     String? phone,
     bool isDefault = false,
   }) async {
@@ -91,7 +88,7 @@ class AddressRepository {
     final conn = await _db.connection;
 
     // If setting as default, unset other defaults first
-    if (isDefault == true) {
+    if (isDefault ?? false) {
       // Get the user_id for this address
       final addr = await findById(id);
       if (addr != null) {

@@ -1,7 +1,6 @@
+import 'package:backend/db/database.dart';
 import 'package:postgres/postgres.dart';
 import 'package:uuid/uuid.dart';
-
-import 'package:backend/db/database.dart';
 
 class UserRepository {
 
@@ -70,6 +69,23 @@ class UserRepository {
     return result.first[0]! as int;
   }
 
+  Future<String?> getStripeCustomerId(String userId) async {
+    final user = await findById(userId);
+    if (user == null) return null;
+    return user['stripeCustomerId'] as String?;
+  }
+
+  Future<void> setStripeCustomerId(String userId, String stripeCustomerId) async {
+    final conn = await _db.connection;
+    await conn.execute(
+      Sql.named('''
+        UPDATE users SET stripe_customer_id = @stripeCustomerId, updated_at = NOW()
+        WHERE id = @id
+      '''),
+      parameters: {'id': userId, 'stripeCustomerId': stripeCustomerId},
+    );
+  }
+
   Map<String, dynamic> _rowToMap(ResultRow row) {
     final cols = row.toColumnMap();
     return {
@@ -79,6 +95,7 @@ class UserRepository {
       'passwordHash': cols['password_hash'],
       'role': cols['role'],
       'isActive': cols['is_active'],
+      'stripeCustomerId': cols['stripe_customer_id'] as String?,
       'createdAt': (cols['created_at'] as DateTime).toIso8601String(),
       'updatedAt': cols['updated_at'] != null
           ? (cols['updated_at'] as DateTime).toIso8601String()

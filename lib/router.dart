@@ -10,6 +10,7 @@ import 'pages/product_detail_page.dart';
 import 'pages/checkout_page.dart';
 import 'pages/my_orders_page.dart';
 import 'pages/wishlist_page.dart';
+import 'pages/addresses_page.dart';
 import 'pages/login_page.dart';
 import 'pages/register_page.dart';
 import 'pages/admin/admin_shell.dart';
@@ -97,6 +98,11 @@ GoRouter buildRouter() {
       parentNavigatorKey: _rootNavigatorKey,
       path: '/wishlist',
       builder: (context, state) => const WishlistPage(),
+    ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      path: '/addresses',
+      builder: (context, state) => const AddressesPage(),
     ),
     GoRoute(
       parentNavigatorKey: _rootNavigatorKey,

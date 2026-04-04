@@ -174,4 +174,25 @@ const _migrations = <_Migration>[
     )
     ''',
   ),
+  _Migration(
+    '011_create_addresses',
+    '''
+    CREATE TABLE addresses (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      label TEXT NOT NULL DEFAULT 'Home',
+      full_name TEXT NOT NULL,
+      street TEXT NOT NULL,
+      street2 TEXT,
+      city TEXT NOT NULL,
+      state TEXT,
+      postal_code TEXT NOT NULL,
+      country TEXT NOT NULL DEFAULT 'Sweden',
+      phone TEXT,
+      is_default BOOLEAN DEFAULT false,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+    ''',
+  ),
 ];

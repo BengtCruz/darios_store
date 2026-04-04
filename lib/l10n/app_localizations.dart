@@ -224,6 +224,27 @@ class S {
   String wishlistAdded(String name) => '$name added to wishlist';
   String wishlistRemoved(String name) => '$name removed from wishlist';
 
+  // --- Addresses ---
+  String get addressTitle => 'My Addresses';
+  String get addressEmpty => 'No addresses saved';
+  String get addressEmptyDesc => 'Add a delivery address to speed up\nyour checkout experience.';
+  String get addressAdd => 'ADD ADDRESS';
+  String get addressNewTitle => 'New Address';
+  String get addressEditTitle => 'Edit Address';
+  String get addressLabel => 'Label';
+  String get addressFullName => 'Full Name';
+  String get addressStreet => 'Street Address';
+  String get addressStreet2 => 'Apartment, suite, etc. (optional)';
+  String get addressCity => 'City';
+  String get addressPostalCode => 'Postal Code';
+  String get addressCountry => 'Country';
+  String get addressPhone => 'Phone (optional)';
+  String get addressDefault => 'Default';
+  String get addressSetDefault => 'Set as default';
+  String get addressSetAsDefault => 'Set as default address';
+  String get addressDeleteConfirm => 'Delete Address';
+  String addressDeleteMessage(String label) => 'Remove your "$label" address?';
+
   // --- Admin Product Form ---
   String get formEditProduct => 'Edit Product';
   String get formNewProduct => 'New Product';
@@ -493,6 +514,27 @@ class _Sv extends S {
   @override String get wishlistBrowse => 'UTFORSKA PRODUKTER';
   @override String wishlistAdded(String name) => '$name tillagd i önskelistan';
   @override String wishlistRemoved(String name) => '$name borttagen från önskelistan';
+
+  // --- Addresses ---
+  @override String get addressTitle => 'Mina Adresser';
+  @override String get addressEmpty => 'Inga sparade adresser';
+  @override String get addressEmptyDesc => 'Lägg till en leveransadress för att\nsnabba på din utcheckning.';
+  @override String get addressAdd => 'LÄGG TILL ADRESS';
+  @override String get addressNewTitle => 'Ny Adress';
+  @override String get addressEditTitle => 'Redigera Adress';
+  @override String get addressLabel => 'Etikett';
+  @override String get addressFullName => 'Fullständigt namn';
+  @override String get addressStreet => 'Gatuadress';
+  @override String get addressStreet2 => 'Lägenhet, svit, etc. (valfritt)';
+  @override String get addressCity => 'Stad';
+  @override String get addressPostalCode => 'Postnummer';
+  @override String get addressCountry => 'Land';
+  @override String get addressPhone => 'Telefon (valfritt)';
+  @override String get addressDefault => 'Standard';
+  @override String get addressSetDefault => 'Ange som standard';
+  @override String get addressSetAsDefault => 'Ange som standardadress';
+  @override String get addressDeleteConfirm => 'Ta bort adress';
+  @override String addressDeleteMessage(String label) => 'Ta bort din "$label"-adress?';
 
   // --- Admin Product Form ---
   @override String get formEditProduct => 'Redigera Produkt';

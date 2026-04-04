@@ -42,6 +42,7 @@ class S {
   // --- Home ---
   String get homeCategories => 'CATEGORIES';
   String get homeFeatured => 'FEATURED';
+  String get homeAllProducts => 'ALL PRODUCTS';
   String get homeSeeAll => 'See all';
   String get heroTitle => "Flavors\nof Italy";
   String get heroSubtitle => 'Authentic Italian flavors,\ndelivered to your door.';
@@ -374,6 +375,7 @@ class _Sv extends S {
   // --- Home ---
   @override String get homeCategories => 'KATEGORIER';
   @override String get homeFeatured => 'UTVALDA';
+  @override String get homeAllProducts => 'ALLA PRODUKTER';
   @override String get homeSeeAll => 'Visa alla';
   @override String get heroTitle => "Smaker\nfrån Italien";
   @override String get heroSubtitle => 'Autentiska italienska smaker,\nlevererade till din dörr.';

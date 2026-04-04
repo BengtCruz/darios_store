@@ -121,6 +121,31 @@ class S {
   String get footerCookies => 'Cookie Policy';
   String get footerCopyright => "© 2026 Dario's Store. All rights reserved.";
 
+  // --- Nav ---
+  String get navSupport => 'SUPPORT';
+  String get navAbout => 'ABOUT';
+
+  // --- Support Page ---
+  String get supportPageTitle => 'SUPPORT';
+  String get supportPageSubtitle => 'We are here to help you.';
+  String get supportFaqTitle => 'Frequently Asked Questions';
+  String get supportFaq1Q => 'How long does shipping take?';
+  String get supportFaq1A => 'Standard shipping takes 3–5 business days within Sweden. Express delivery is available at checkout for next-day delivery.';
+  String get supportFaq2Q => 'What is your return policy?';
+  String get supportFaq2A => 'We accept returns within 30 days of delivery. Items must be unopened and in their original packaging.';
+  String get supportFaq3Q => 'How can I track my order?';
+  String get supportFaq3A => 'Once your order has shipped, you will receive an email with a tracking link. You can also check your order status under My Orders.';
+  String get supportContactTitle => 'Contact Us';
+  String get supportEmail => 'support@darios-store.com';
+  String get supportPhone => '+46 8 123 45 67';
+  String get supportHours => 'Mon–Fri, 09:00–17:00 CET';
+
+  // --- About Page ---
+  String get aboutMissionTitle => 'Our Mission';
+  String get aboutMissionText => 'We believe everyone deserves access to authentic, high-quality Italian ingredients. Our mission is to bridge the gap between small Italian producers and food lovers around the world.';
+  String get aboutValuesTitle => 'Our Values';
+  String get aboutValuesText => 'Quality over quantity. Sustainability in every step. Direct partnerships with family-run producers. Transparent sourcing and fair pricing.';
+
   // --- Admin Shell ---
   String get adminTitle => "DARIO'S STORE — ADMIN";
   String get adminBackToStore => 'Back to store';
@@ -427,6 +452,31 @@ class _Sv extends S {
   @override String get footerPrivacy => 'Integritetspolicy';
   @override String get footerCookies => 'Cookiepolicy';
   @override String get footerCopyright => "© 2026 Dario's Store. Alla rättigheter förbehållna.";
+
+  // --- Nav ---
+  @override String get navSupport => 'SUPPORT';
+  @override String get navAbout => 'OM OSS';
+
+  // --- Support Page ---
+  @override String get supportPageTitle => 'SUPPORT';
+  @override String get supportPageSubtitle => 'Vi finns här för att hjälpa dig.';
+  @override String get supportFaqTitle => 'Vanliga frågor';
+  @override String get supportFaq1Q => 'Hur lång tid tar leveransen?';
+  @override String get supportFaq1A => 'Standardleverans tar 3–5 arbetsdagar inom Sverige. Expressleverans finns tillgänglig vid kassan för leverans nästa dag.';
+  @override String get supportFaq2Q => 'Vilken är er returpolicy?';
+  @override String get supportFaq2A => 'Vi accepterar returer inom 30 dagar efter leverans. Varorna måste vara oöppnade och i originalförpackningen.';
+  @override String get supportFaq3Q => 'Hur spårar jag min beställning?';
+  @override String get supportFaq3A => 'När din beställning har skickats får du ett mejl med en spårningslänk. Du kan också se orderstatus under Mina beställningar.';
+  @override String get supportContactTitle => 'Kontakta oss';
+  @override String get supportEmail => 'support@darios-store.com';
+  @override String get supportPhone => '+46 8 123 45 67';
+  @override String get supportHours => 'Mån–Fre, 09:00–17:00 CET';
+
+  // --- About Page ---
+  @override String get aboutMissionTitle => 'Vårt uppdrag';
+  @override String get aboutMissionText => 'Vi tror att alla förtjänar tillgång till autentiska italienska ingredienser av hög kvalitet. Vårt uppdrag är att överbrygga klyftan mellan små italienska producenter och matälskare runt om i världen.';
+  @override String get aboutValuesTitle => 'Våra värderingar';
+  @override String get aboutValuesText => 'Kvalitet framför kvantitet. Hållbarhet i varje steg. Direkta partnerskap med familjeägda producenter. Transparent inköp och rättvisa priser.';
 
   // --- Admin Shell ---
   @override String get adminTitle => "DARIO'S STORE — ADMIN";

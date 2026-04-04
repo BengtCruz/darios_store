@@ -15,6 +15,8 @@ import 'pages/payment_methods_page.dart';
 import 'pages/login_page.dart';
 import 'pages/register_page.dart';
 import 'pages/admin/admin_shell.dart';
+import 'pages/support_page.dart';
+import 'pages/about_page.dart';
 import 'l10n/app_localizations.dart';
 import 'theme/app_theme.dart';
 import 'utils/responsive.dart';
@@ -127,6 +129,16 @@ GoRouter buildRouter() {
       parentNavigatorKey: _rootNavigatorKey,
       path: '/admin',
       builder: (context, state) => const AdminShell(),
+    ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      path: '/support',
+      builder: (context, state) => const SupportPage(),
+    ),
+    GoRoute(
+      parentNavigatorKey: _rootNavigatorKey,
+      path: '/about',
+      builder: (context, state) => const AboutPage(),
     ),
   ],
   );

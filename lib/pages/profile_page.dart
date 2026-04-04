@@ -105,7 +105,7 @@ class ProfilePage extends StatelessWidget {
           const Divider(height: 32),
 
           // Menu items
-          _buildMenuItem(context, Icons.shopping_bag_outlined, S.of(context).profileMyOrders),
+          _buildMenuItem(context, Icons.shopping_bag_outlined, S.of(context).profileMyOrders, onTap: () => context.push('/my-orders')),
           _buildMenuItem(context, Icons.favorite_outline, S.of(context).profileWishlist),
           _buildMenuItem(context, Icons.location_on_outlined, S.of(context).profileAddresses),
           _buildMenuItem(context, Icons.payment_outlined, S.of(context).profilePaymentMethods),
@@ -163,9 +163,9 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(BuildContext context, IconData icon, String title) {
+  Widget _buildMenuItem(BuildContext context, IconData icon, String title, {VoidCallback? onTap}) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap ?? () {},
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 14),
         child: Row(

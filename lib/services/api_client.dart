@@ -120,9 +120,10 @@ class ApiClient {
   }
 
   // Orders
-  Future<List<Map<String, dynamic>>> getOrders({String? status}) async {
+  Future<List<Map<String, dynamic>>> getOrders({String? status, String? email}) async {
     final params = <String, String>{};
     if (status != null) params['status'] = status;
+    if (email != null) params['email'] = email;
 
     final uri = Uri.parse('$_baseUrl/api/orders').replace(queryParameters: params.isNotEmpty ? params : null);
     final response = await _client.get(uri, headers: _headers);

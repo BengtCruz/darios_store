@@ -209,6 +209,13 @@ class S {
   String get orderDetails => 'Details';
   String get orderChangeStatus => 'Change status';
 
+  // --- My Orders ---
+  String get myOrdersTitle => 'My Orders';
+  String get myOrdersEmpty => 'No orders yet';
+  String get myOrdersEmptyDesc => 'Your order history will appear here\nonce you make a purchase.';
+  String get myOrdersItem => 'item';
+  String get myOrdersItems => 'items';
+
   // --- Admin Product Form ---
   String get formEditProduct => 'Edit Product';
   String get formNewProduct => 'New Product';
@@ -463,6 +470,13 @@ class _Sv extends S {
   @override String get close => 'STÄNG';
   @override String get orderDetails => 'Detaljer';
   @override String get orderChangeStatus => 'Ändra status';
+
+  // --- My Orders ---
+  @override String get myOrdersTitle => 'Mina Beställningar';
+  @override String get myOrdersEmpty => 'Inga beställningar ännu';
+  @override String get myOrdersEmptyDesc => 'Din orderhistorik visas här\nnär du har gjort ett köp.';
+  @override String get myOrdersItem => 'artikel';
+  @override String get myOrdersItems => 'artiklar';
 
   // --- Admin Product Form ---
   @override String get formEditProduct => 'Redigera Produkt';

@@ -17,8 +17,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _api = ApiClient();
+  List<Product> _allProducts = [];
   List<Product> _featured = [];
   List<String> _categories = [];
+  String? _selectedCategory;
   bool _loading = true;
 
   @override
@@ -30,15 +32,19 @@ class _HomePageState extends State<HomePage> {
   Future<void> _load() async {
     try {
       final results = await Future.wait([
+        _api.getProducts(),
         _api.getProducts(featured: true),
         _api.getCategories(),
       ]);
       if (!mounted) return;
       setState(() {
-        _featured = results[0]
+        _allProducts = results[0]
             .map((j) => Product.fromJson(j))
             .toList();
-        _categories = results[1]
+        _featured = results[1]
+            .map((j) => Product.fromJson(j))
+            .toList();
+        _categories = results[2]
             .map((j) => j['name'] as String)
             .toList();
         _loading = false;
@@ -47,6 +53,13 @@ class _HomePageState extends State<HomePage> {
       if (!mounted) return;
       setState(() => _loading = false);
     }
+  }
+
+  List<Product> get _filteredProducts {
+    if (_selectedCategory == null) return _allProducts;
+    return _allProducts
+        .where((p) => p.category == _selectedCategory)
+        .toList();
   }
 
   @override
@@ -115,6 +128,18 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 16),
                     _buildFeaturedGrid(context, _featured),
+                    const SizedBox(height: 48),
+
+                    // All Products
+                    Text(
+                      s.homeAllProducts,
+                      style:
+                          Theme.of(context).textTheme.labelLarge?.copyWith(
+                                letterSpacing: 3,
+                              ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildFeaturedGrid(context, _filteredProducts),
                     const SizedBox(height: 48),
 
                     // About section
@@ -189,29 +214,40 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildCategoryList(BuildContext context) {
     final isWide = Responsive.isWide(context);
+    final allLabel = S.of(context).catalogAll;
+    final items = [null, ..._categories];
+
+    Widget buildChip(String? cat) {
+      final selected = _selectedCategory == cat;
+      final label = cat?.toUpperCase() ?? allLabel.toUpperCase();
+      return GestureDetector(
+        onTap: () => setState(() => _selectedCategory = cat),
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+            decoration: BoxDecoration(
+              color: selected ? AppTheme.nero : Colors.transparent,
+              border: Border.all(color: AppTheme.nero, width: 1.5),
+            ),
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontSize: 12,
+                    letterSpacing: 2,
+                    color: selected ? AppTheme.bianco : AppTheme.nero,
+                  ),
+            ),
+          ),
+        ),
+      );
+    }
+
     if (isWide) {
       return Wrap(
         spacing: 12,
         runSpacing: 12,
-        children: _categories.map((cat) {
-          return MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppTheme.nero, width: 1.5),
-              ),
-              child: Text(
-                cat.toUpperCase(),
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontSize: 12,
-                      letterSpacing: 2,
-                    ),
-              ),
-            ),
-          );
-        }).toList(),
+        children: items.map(buildChip).toList(),
       );
     }
 
@@ -219,26 +255,9 @@ class _HomePageState extends State<HomePage> {
       height: 48,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        itemCount: _categories.length,
+        itemCount: items.length,
         separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          return Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            decoration: BoxDecoration(
-              border: Border.all(color: AppTheme.nero, width: 1.5),
-            ),
-            child: Center(
-              child: Text(
-                _categories[index].toUpperCase(),
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontSize: 12,
-                      letterSpacing: 2,
-                    ),
-              ),
-            ),
-          );
-        },
+        itemBuilder: (context, index) => buildChip(items[index]),
       ),
     );
   }
